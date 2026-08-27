@@ -13,73 +13,85 @@ export const ClientsCarousel: React.FC = () => {
       name: "ECCO", 
       category: "Global Footwear", 
       src: "/images/clients/ecco.png",
-      alt: "ECCO Armenia IT Partner" 
+      alt: "ECCO Armenia IT Partner",
+      url: "https://ecco.am/",
     },
     { 
       name: "Karas Wines", 
       category: "Winery & Export", 
       src: "/images/clients/karas.png",
-      alt: "Karas Wines IT Infrastructure" 
+      alt: "Karas Wines IT Infrastructure",
+      url: "https://karaswines.com/",
     },
     { 
       name: "Dargett", 
       category: "Craft Brewery & Hospitality", 
       src: "/images/clients/dargett.jpg",
-      alt: "Dargett Craft Brewery" 
+      alt: "Dargett Craft Brewery",
+      url: "https://dargett.com/",
     },
     { 
       name: "Coffee Shop Company", 
       category: "Café Chain", 
       src: "/images/clients/coffee-shop.png",
-      alt: "Coffee Shop Company Armenia" 
+      alt: "Coffee Shop Company Armenia",
+      url: "https://coffeeshopcompany.am/",
     },
     { 
       name: "Rouge", 
       category: "Luxury Cosmetics", 
       src: "/images/clients/rouge.png",
-      alt: "Rouge Perfumery & Cosmetics" 
+      alt: "Rouge Perfumery & Cosmetics",
+      url: "https://rouge.am/",
     },
     { 
       name: "Guess", 
       category: "Fashion Retail", 
       src: "/images/clients/guess.jpg",
-      alt: "Guess Armenia Retail IT" 
+      alt: "Guess Armenia Retail IT",
+      url: "https://guess.am/",
     },
     { 
       name: "Сыроварня", 
       category: "Restaurant Group", 
       src: "/images/clients/sirovarnya.jpeg",
-      alt: "Sirovarnya Restaurant Yerevan" 
+      alt: "Sirovarnya Restaurant Yerevan",
+      url: "https://syrovarnya.com/",
     },
     { 
       name: "Rare Water", 
       category: "Beverage Production", 
       src: "/images/clients/rare-water.png",
-      alt: "Rare Water Armenia" 
+      alt: "Rare Water Armenia",
+      url: "https://rarewater.am/",
     },
     { 
       name: "CUBE", 
       category: "Architecture & Design", 
       src: "/images/clients/cub.svg",
-      alt: "CUBE Architecture" 
+      alt: "CUBE Architecture",
+      url: "https://cub.am/",
     },
     { 
       name: "Parvanyan Consulting", 
       category: "Advisory & Audit", 
       src: "/images/clients/parvanyan.png",
-      alt: "Parvanyan Consulting" 
+      alt: "Parvanyan Consulting",
+      url: "https://parvanyan.am/",
     },
     { 
       name: "Yasaman", 
       category: "Hospitality & Cuisine", 
       src: "/images/clients/yasaman.png",
-      alt: "Yasaman Restaurant Yerevan" 
+      alt: "Yasaman Restaurant Yerevan",
+      url: "https://yasaman.am/",
     },
     { 
       name: "Center of Excellence", 
       category: "Education & Tech", 
       src: "/images/clients/coe.svg",
-      alt: "Center of Excellence (COE)" 
+      alt: "Center of Excellence (COE)",
+      url: "https://www.coe.int/",
     },
   ];
 
@@ -112,9 +124,12 @@ export const ClientsCarousel: React.FC = () => {
 
         <div className="animate-marquee flex items-center gap-6">
           {marqueeList.map((client, idx) => (
-            <div
+            <a
               key={idx}
-              className="flex-shrink-0 w-56 h-32 rounded-2xl bg-white/[0.03] hover:bg-white/[0.07] border border-white/10 hover:border-lime-500/40 p-4 flex flex-col justify-center items-center text-center transition-all duration-300 hover:scale-105 group backdrop-blur-sm shadow-md"
+              href={client.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex-shrink-0 w-56 h-32 rounded-2xl bg-white/[0.03] hover:bg-white/[0.07] border border-white/10 hover:border-lime-500/40 p-4 flex flex-col justify-center items-center text-center transition-all duration-300 hover:scale-105 group backdrop-blur-sm shadow-md cursor-pointer"
             >
               <div className="relative w-36 h-14 flex items-center justify-center">
                 <img
@@ -126,7 +141,7 @@ export const ClientsCarousel: React.FC = () => {
               <span className="text-[11px] font-semibold text-slate-400 mt-2 tracking-wider group-hover:text-lime-400 transition-colors line-clamp-1">
                 {client.name}
               </span>
-            </div>
+            </a>
           ))}
         </div>
       </div>

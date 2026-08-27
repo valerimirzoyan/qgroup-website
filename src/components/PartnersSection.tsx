@@ -2,7 +2,7 @@
 
 import React from "react";
 import { useLanguage } from "@/data/LanguageContext";
-import { ShieldCheck, Cpu, CheckCircle2, Award, Zap } from "lucide-react";
+import { ShieldCheck, Cpu, CheckCircle2, Award, Zap, ExternalLink } from "lucide-react";
 
 export const PartnersSection: React.FC = () => {
   const { t } = useLanguage();
@@ -10,68 +10,75 @@ export const PartnersSection: React.FC = () => {
   const partners = [
     {
       name: "Microsoft",
-      logo: "/images/partners/microsoft.svg",
-      tag: "Cloud, Azure & 365",
+      logo: "/images/partners/microsoft-orig.png",
+      tag: "Cloud, Azure & Microsoft 365",
       type: "Global Vendor",
+      url: "https://www.microsoft.com/",
     },
     {
       name: "Bitdefender",
-      logo: "/images/partners/bitdefender.svg",
+      logo: "/images/partners/bitdefender-orig.webp",
       tag: "Endpoint & EDR Security",
       type: "Global Vendor",
+      url: "https://www.bitdefender.com/",
     },
     {
       name: "Kaspersky",
-      logo: "/images/partners/kaspersky.svg",
-      tag: "Cybersecurity Defense",
+      logo: "/images/partners/kaspersky-orig.png",
+      tag: "Cybersecurity & Antivirus",
       type: "Global Vendor",
+      url: "https://www.kaspersky.com/",
     },
     {
       name: "MUK Group",
-      logo: "/images/partners/muk.svg",
+      logo: "/images/partners/muk-orig.png",
       tag: "Cisco, Dell & Fortinet VAD",
       type: "Premier Distributor",
+      url: "https://muk.group/am/country/am/",
     },
     {
       name: "Mont Tech",
-      logo: "/images/partners/monttech.svg",
+      logo: "/images/partners/mont-orig.png",
       tag: "Software & Cloud Solutions",
       type: "VAD Distributor",
+      url: "https://monttech.am/hy-am",
     },
     {
       name: "Axoft Global",
-      logo: "/images/partners/axoft.svg",
+      logo: "/images/partners/axoft-orig.png",
       tag: "Security & Infrastructure",
       type: "Global Distributor",
+      url: "https://axoftglobal.com/ru-am/",
     },
     {
       name: "DG Comp",
-      logo: "/images/partners/dgcomp.svg",
+      logo: "/images/partners/dgcomp-orig.png",
       tag: "Enterprise IT Hardware",
-      type: "Regional Distributor",
+      type: "Authorized Distributor",
+      url: "https://dgcomp.am/",
     },
     {
       name: "X-Art",
-      logo: "/images/partners/xart.svg",
-      tag: "Apple & IT Equipment",
-      type: "Regional Distributor",
+      logo: "/images/partners/xart-orig.png",
+      tag: "Apple & IT Hardware",
+      type: "Authorized Distributor",
+      url: "https://x-art.am/",
     },
     {
       name: "Scan City",
-      logo: "/images/partners/scancity.svg",
+      logo: "/images/partners/scancity-orig.png",
       tag: "Auto-ID & POS Systems",
-      type: "Specialized Partner",
+      type: "Authorized Distributor",
+      url: "https://scancity.am/",
     },
     {
       name: "GSC",
-      logo: "/images/partners/gsc.svg",
+      logo: "/images/partners/gsc-orig.png",
       tag: "Security & CCTV Systems",
-      type: "Low-Current Partner",
+      type: "Security Partner",
+      url: "https://www.gsc.am/",
     },
   ];
-
-  // Repeat for smooth infinite marquee
-  const marqueeList = [...partners, ...partners];
 
   return (
     <section id="partners" className="py-20 bg-[#080d1a] relative overflow-hidden border-t border-slate-800/80">
@@ -99,15 +106,24 @@ export const PartnersSection: React.FC = () => {
         {/* Interactive Responsive Partner Grid */}
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3.5 sm:gap-4 mb-10">
           {partners.map((partner, idx) => (
-            <div
+            <a
               key={idx}
-              className="group relative p-4 sm:p-5 rounded-2xl bg-slate-900/70 border border-slate-800/90 hover:border-lime-500/50 hover:bg-slate-900/90 transition-all duration-300 flex flex-col items-center justify-between text-center shadow-lg hover:shadow-lime-500/10 hover:-translate-y-1 backdrop-blur-sm"
+              href={partner.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group relative p-4 rounded-2xl bg-slate-900/80 border border-slate-800 hover:border-lime-500/50 hover:bg-slate-900 transition-all duration-300 flex flex-col items-center justify-between text-center shadow-lg hover:shadow-lime-500/10 hover:-translate-y-1 backdrop-blur-sm cursor-pointer"
             >
-              <div className="w-full h-12 flex items-center justify-center mb-3">
+              {/* External Link Hover Icon */}
+              <div className="absolute top-2.5 right-2.5 opacity-0 group-hover:opacity-100 transition-opacity">
+                <ExternalLink className="w-3 h-3 text-lime-400" />
+              </div>
+
+              {/* Logo Presentation Box */}
+              <div className="w-full h-14 bg-white/95 rounded-xl p-2 flex items-center justify-center mb-3 shadow-inner group-hover:bg-white transition-colors">
                 <img
                   src={partner.logo}
                   alt={partner.name}
-                  className="max-h-9 max-w-[130px] object-contain filter grayscale opacity-75 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300 group-hover:scale-105"
+                  className="max-h-10 max-w-[130px] object-contain transition-transform duration-300 group-hover:scale-105"
                 />
               </div>
 
@@ -120,11 +136,11 @@ export const PartnersSection: React.FC = () => {
                 </div>
               </div>
 
-              <div className="mt-2.5 pt-2 border-t border-slate-800/80 w-full flex items-center justify-center gap-1 text-[9px] font-semibold text-lime-400/80 uppercase tracking-wider">
+              <div className="mt-2.5 pt-2 border-t border-slate-800/80 w-full flex items-center justify-center gap-1 text-[9px] font-semibold text-lime-400/90 uppercase tracking-wider">
                 <CheckCircle2 className="w-2.5 h-2.5 text-lime-400" />
                 <span>{partner.type}</span>
               </div>
-            </div>
+            </a>
           ))}
         </div>
 
