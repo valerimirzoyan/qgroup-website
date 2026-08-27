@@ -79,7 +79,8 @@ function MainContent() {
           onTabChange={handleSelectServiceTab}
         />
         <WhyUs />
-        <CostCalculator onPlanSelected={handlePlanSelected} />
+        {/* Cost Calculator Section (Hidden on request - code preserved for future reactivation) */}
+        {/* <CostCalculator onPlanSelected={handlePlanSelected} /> */}
         <ClientsCarousel />
         <PartnersSection />
         <Testimonials />
