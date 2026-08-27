@@ -1,6 +1,36 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+# ==============================================================================
+# Security & Environment Variables (NEVER COMMIT SECRETS)
+# ==============================================================================
+.env
+.env*.local
+.env.development
+.env.test
+.env.production
+.env.staging
+*.env
+*.env.*
+*.local
 
-# dependencies
+# Private Keys, Certificates, and Credentials
+*.pem
+*.key
+*.cert
+*.crt
+*.pfx
+*.p12
+*.keystore
+*.jks
+*credentials*.json
+*serviceAccount*.json
+*service_account*.json
+*secret*.json
+google-services.json
+GoogleService-Info.plist
+
+# ==============================================================================
+# Dependencies
+# ==============================================================================
+node_modules/
 /node_modules
 /.pnp
 .pnp.*
@@ -10,32 +40,66 @@
 !.yarn/releases
 !.yarn/versions
 
-# testing
-/coverage
-
-# next.js
+# ==============================================================================
+# Next.js Build & Outputs
+# ==============================================================================
+.next/
 /.next/
+out/
 /out/
-
-# production
+build/
 /build
+dist/
+/dist
 
-# misc
-.DS_Store
-*.pem
+# TypeScript cache
+*.tsbuildinfo
+next-env.d.ts
 
-# debug
+# ==============================================================================
+# Firebase & Vercel
+# ==============================================================================
+.firebase/
+firebase-debug.log*
+firestore-debug.log*
+ui-debug.log*
+.vercel
+
+# ==============================================================================
+# Logs and Diagnostics
+# ==============================================================================
+logs
+*.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-.pnpm-debug.log*
+pnpm-debug.log*
+lerna-debug.log*
 
-# env files (can opt-in for committing if needed)
-.env*
+# ==============================================================================
+# Testing & Coverage
+# ==============================================================================
+coverage/
+/coverage
+.nyc_output/
 
-# vercel
-.vercel
+# ==============================================================================
+# Operating System & IDE Specific Files
+# ==============================================================================
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+Desktop.ini
 
-# typescript
-*.tsbuildinfo
-next-env.d.ts
+# IDEs
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+*.swp
+*.swo
+*~

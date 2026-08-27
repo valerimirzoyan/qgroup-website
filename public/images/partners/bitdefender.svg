@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 60" fill="none">
+  <path d="M16 16H28C34 16 38 19.5 38 24.5C38 27.5 36.5 30 33.8 31.2C37.2 32.5 39 35.5 39 39C39 44.5 34.5 48 28 48H16V16ZM23 28.5H27.5C30 28.5 31.8 27 31.8 24.8C31.8 22.5 30 21.2 27.5 21.2H23V28.5ZM23 42.8H28C30.8 42.8 32.6 41.2 32.6 38.8C32.6 36.2 30.8 34.8 28 34.8H23V42.8Z" fill="#ED1C24"/>
+  <path d="M22 12L38 12L42 16L26 16Z" fill="#ED1C24"/>
+  <text x="48" y="38" fill="#FFFFFF" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="700" letter-spacing="-0.3">Bitdefender</text>
+</svg>

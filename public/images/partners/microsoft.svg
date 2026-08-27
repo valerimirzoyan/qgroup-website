@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 60" fill="none">
+  <rect x="15" y="16" width="12" height="12" fill="#F25022"/>
+  <rect x="30" y="16" width="12" height="12" fill="#7FBA00"/>
+  <rect x="15" y="31" width="12" height="12" fill="#00A4EF"/>
+  <rect x="30" y="31" width="12" height="12" fill="#FFB900"/>
+  <text x="52" y="38" fill="#FFFFFF" font-family="system-ui, -apple-system, sans-serif" font-size="18" font-weight="600" letter-spacing="-0.5">Microsoft</text>
+</svg>
