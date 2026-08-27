@@ -15,11 +15,9 @@ import { ContactSection } from "@/components/ContactSection";
 import { Footer } from "@/components/Footer";
 import { ConsultationModal } from "@/components/ConsultationModal";
 import { AnimatedFavicon } from "@/components/AnimatedFavicon";
-import { Layers, Check } from "lucide-react";
 
 function MainContent() {
   const [modalOpen, setModalOpen] = useState(false);
-  const [showPartners, setShowPartners] = useState(true);
   const [selectedService, setSelectedService] = useState<string | undefined>(undefined);
   const [selectedServiceTab, setSelectedServiceTab] = useState<string>("all");
   const [calculatorPlan, setCalculatorPlan] = useState<{
@@ -65,21 +63,6 @@ function MainContent() {
       {/* Real-time Dynamic Animated Tab Icon */}
       <AnimatedFavicon />
 
-      {/* Floating Interactive Version Comparison Toggle */}
-      <div className="fixed bottom-5 right-5 z-50 flex items-center gap-2 p-1.5 rounded-full bg-slate-900/95 border border-lime-500/40 shadow-2xl shadow-black/80 backdrop-blur-xl text-xs">
-        <button
-          onClick={() => setShowPartners(!showPartners)}
-          className={`flex items-center gap-2 px-3.5 py-2 rounded-full font-bold transition-all cursor-pointer ${
-            showPartners 
-              ? "bg-lime-500 text-slate-950 shadow-md shadow-lime-500/20" 
-              : "bg-slate-800 text-slate-300 hover:text-white"
-          }`}
-        >
-          <Layers className="w-3.5 h-3.5" />
-          <span>Partners Section: {showPartners ? "ENABLED (New Version)" : "DISABLED (Previous Version)"}</span>
-        </button>
-      </div>
-
       {/* Navigation */}
       <Navbar 
         onOpenConsultation={() => handleOpenConsultation()} 
@@ -98,10 +81,7 @@ function MainContent() {
         <WhyUs />
         <CostCalculator onPlanSelected={handlePlanSelected} />
         <ClientsCarousel />
-        
-        {/* Dynamic Partners Section */}
-        {showPartners && <PartnersSection />}
-        
+        <PartnersSection />
         <Testimonials />
         <ContactSection 
           initialService={selectedService}
@@ -131,3 +111,4 @@ export default function Home() {
     </LanguageProvider>
   );
 }
+
