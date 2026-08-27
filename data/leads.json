@@ -1,0 +1,30 @@
+[
+  {
+    "id": "1787615139978",
+    "timestamp": "2026-08-24T23:45:39.977Z",
+    "name": "dfdf",
+    "company": "dfd",
+    "email": "valerimirzoyan@proton.me",
+    "phone": "2323",
+    "service": "Custom Plan (80 PCs, 0 Servers)",
+    "message": "",
+    "planDetails": {
+      "workstations": 80,
+      "servers": 0,
+      "locations": 1,
+      "security": "advanced",
+      "schedule": "business",
+      "estimatedCost": 800000
+    }
+  },
+  {
+    "id": "1787614522683",
+    "timestamp": "2026-08-24T23:35:22.679Z",
+    "name": "Aram Vardanyan",
+    "company": "Enterprise LLC",
+    "email": "aram@enterprise.am",
+    "phone": "+37491123456",
+    "service": "Cybersecurity & Threat Defense",
+    "message": "We need an infrastructure security audit."
+  }
+]

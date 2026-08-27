@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 60" fill="none">
+  <!-- Stylized MUK hexagon badge -->
+  <polygon points="28,14 40,21 40,37 28,44 16,37 16,21" fill="#84CC16" fill-opacity="0.15" stroke="#84CC16" stroke-width="2"/>
+  <path d="M22 34V24L28 29L34 24V34" stroke="#84CC16" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="48" y="34" fill="#FFFFFF" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="900" letter-spacing="1">MUK GROUP</text>
+  <text x="48" y="44" fill="#84CC16" font-family="system-ui, -apple-system, sans-serif" font-size="8.5" font-weight="700" letter-spacing="1.5">VAD DISTRIBUTOR</text>
+</svg>

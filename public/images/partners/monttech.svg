@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 60" fill="none">
+  <rect x="14" y="16" width="28" height="28" rx="6" fill="#0072CE"/>
+  <path d="M20 36V24H24L28 30L32 24H36V36H32V28L28 34L24 28V36H20Z" fill="#FFFFFF"/>
+  <text x="50" y="34" fill="#FFFFFF" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="800" letter-spacing="1">MONT</text>
+  <text x="50" y="44" fill="#00A3E0" font-family="system-ui, -apple-system, sans-serif" font-size="9" font-weight="700" letter-spacing="2">TECH</text>
+</svg>

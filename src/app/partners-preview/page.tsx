@@ -15,11 +15,10 @@ import { ContactSection } from "@/components/ContactSection";
 import { Footer } from "@/components/Footer";
 import { ConsultationModal } from "@/components/ConsultationModal";
 import { AnimatedFavicon } from "@/components/AnimatedFavicon";
-import { Layers, Check } from "lucide-react";
+import { Eye, ArrowLeft } from "lucide-react";
 
-function MainContent() {
+function PartnersPreviewContent() {
   const [modalOpen, setModalOpen] = useState(false);
-  const [showPartners, setShowPartners] = useState(true);
   const [selectedService, setSelectedService] = useState<string | undefined>(undefined);
   const [selectedServiceTab, setSelectedServiceTab] = useState<string>("all");
   const [calculatorPlan, setCalculatorPlan] = useState<{
@@ -36,12 +35,10 @@ function MainContent() {
     setModalOpen(true);
   };
 
-  // When a specific service is clicked from Header Dropdown or Footer
   const handleSelectServiceTab = (tabId: string) => {
     setSelectedServiceTab(tabId);
   };
 
-  // Option 2 Flow: Smoothly scroll to the Contact section with the calculated plan attached
   const handlePlanSelected = (plan: {
     workstations: number;
     servers: number;
@@ -53,7 +50,6 @@ function MainContent() {
     setCalculatorPlan(plan);
     setSelectedService(`Custom Plan (${plan.workstations} PCs, ${plan.servers} Servers)`);
     
-    // Smooth scroll down to contact section
     const contactSection = document.getElementById("contact");
     if (contactSection) {
       contactSection.scrollIntoView({ behavior: "smooth" });
@@ -62,22 +58,17 @@ function MainContent() {
 
   return (
     <div className="min-h-screen bg-[#080d1a] text-slate-100 flex flex-col selection:bg-lime-500 selection:text-slate-950">
-      {/* Real-time Dynamic Animated Tab Icon */}
       <AnimatedFavicon />
 
-      {/* Floating Interactive Version Comparison Toggle */}
-      <div className="fixed bottom-5 right-5 z-50 flex items-center gap-2 p-1.5 rounded-full bg-slate-900/95 border border-lime-500/40 shadow-2xl shadow-black/80 backdrop-blur-xl text-xs">
-        <button
-          onClick={() => setShowPartners(!showPartners)}
-          className={`flex items-center gap-2 px-3.5 py-2 rounded-full font-bold transition-all cursor-pointer ${
-            showPartners 
-              ? "bg-lime-500 text-slate-950 shadow-md shadow-lime-500/20" 
-              : "bg-slate-800 text-slate-300 hover:text-white"
-          }`}
+      {/* Floating Version Indicator & Quick Switcher */}
+      <div className="fixed bottom-6 right-6 z-50 animate-bounce">
+        <a
+          href="/"
+          className="flex items-center gap-2 px-4 py-2.5 rounded-full bg-slate-900/95 border border-lime-500/50 text-white text-xs font-bold shadow-2xl shadow-lime-500/20 backdrop-blur-lg hover:bg-lime-500 hover:text-slate-950 transition-all group cursor-pointer"
         >
-          <Layers className="w-3.5 h-3.5" />
-          <span>Partners Section: {showPartners ? "ENABLED (New Version)" : "DISABLED (Previous Version)"}</span>
-        </button>
+          <ArrowLeft className="w-4 h-4 text-lime-400 group-hover:text-slate-950 transition-colors" />
+          <span>Switch to Previous Version (No Partners)</span>
+        </a>
       </div>
 
       {/* Navigation */}
@@ -86,7 +77,7 @@ function MainContent() {
         onSelectServiceTab={handleSelectServiceTab}
       />
 
-      {/* Main Page Sections */}
+      {/* Main Page Sections with Partners Section Included */}
       <main className="flex-grow">
         <Hero onOpenConsultation={() => handleOpenConsultation()} />
         <Stats />
@@ -99,8 +90,8 @@ function MainContent() {
         <CostCalculator onPlanSelected={handlePlanSelected} />
         <ClientsCarousel />
         
-        {/* Dynamic Partners Section */}
-        {showPartners && <PartnersSection />}
+        {/* Partners Section */}
+        <PartnersSection />
         
         <Testimonials />
         <ContactSection 
@@ -113,7 +104,7 @@ function MainContent() {
       {/* Footer */}
       <Footer onSelectServiceTab={handleSelectServiceTab} />
 
-      {/* Interactive Modal (for navbar / hero consultation triggers) */}
+      {/* Interactive Modal */}
       <ConsultationModal
         isOpen={modalOpen}
         onClose={() => setModalOpen(false)}
@@ -124,10 +115,10 @@ function MainContent() {
   );
 }
 
-export default function Home() {
+export default function PartnersPreviewPage() {
   return (
     <LanguageProvider>
-      <MainContent />
+      <PartnersPreviewContent />
     </LanguageProvider>
   );
 }
