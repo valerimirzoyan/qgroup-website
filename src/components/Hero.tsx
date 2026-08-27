@@ -72,11 +72,11 @@ export const Hero: React.FC<HeroProps> = ({ onOpenConsultation }) => {
               </button>
 
               <a
-                href="#calculator"
+                href="#services"
                 className="w-full sm:w-auto px-7 py-4 rounded-xl bg-slate-900/90 hover:bg-slate-800 border border-slate-700/80 text-white font-semibold text-base flex items-center justify-center gap-2.5 transition backdrop-blur-md hover:border-slate-600 shadow-md"
               >
-                <Calculator className="w-5 h-5 text-lime-400" />
-                <span>{t("hero.cta_calculator")}</span>
+                <Server className="w-5 h-5 text-lime-400" />
+                <span>{t("nav.services")}</span>
               </a>
             </div>
 

@@ -210,10 +210,10 @@ export const Navbar: React.FC<NavbarProps> = ({
             </a>
 
             <a
-              href="#calculator"
+              href="#partners"
               className="px-2.5 xl:px-3 py-2 text-xs xl:text-sm font-medium text-slate-300 hover:text-white rounded-lg hover:bg-white/5 transition whitespace-nowrap"
             >
-              {t("nav.calculator")}
+              {t("nav.partners")}
             </a>
 
             <a
@@ -358,11 +358,11 @@ export const Navbar: React.FC<NavbarProps> = ({
             </a>
 
             <a
-              href="#calculator"
+              href="#partners"
               onClick={() => setMobileMenuOpen(false)}
               className="px-3 py-2.5 rounded-xl text-slate-200 font-medium hover:bg-slate-900"
             >
-              {t("nav.calculator")}
+              {t("nav.partners")}
             </a>
 
             <a
