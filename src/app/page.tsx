@@ -21,6 +21,7 @@ function MainContent() {
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedService, setSelectedService] = useState<string | undefined>(undefined);
   const [selectedServiceTab, setSelectedServiceTab] = useState<string>("all");
+  const [introRevealed, setIntroRevealed] = useState(false);
   const [calculatorPlan, setCalculatorPlan] = useState<{
     workstations: number;
     servers: number;
@@ -60,51 +61,57 @@ function MainContent() {
   };
 
   return (
-    <div className="min-h-screen bg-[#080d1a] text-slate-100 flex flex-col selection:bg-lime-500 selection:text-slate-950">
+    <div className={`min-h-screen bg-[#080d1a] text-slate-100 flex flex-col selection:bg-lime-500 selection:text-slate-950 ${!introRevealed ? "h-screen overflow-hidden" : ""}`}>
       {/* Real-time Dynamic Animated Tab Icon */}
       <AnimatedFavicon />
 
       {/* Opening Intro Sequence */}
-      <OpeningAnimation />
-
-      {/* Navigation */}
-      <Navbar 
-        onOpenConsultation={() => handleOpenConsultation()} 
-        onSelectServiceTab={handleSelectServiceTab}
+      <OpeningAnimation 
+        onStartFadeOut={() => setIntroRevealed(true)}
+        onComplete={() => setIntroRevealed(true)}
       />
 
-      {/* Main Page Sections */}
-      <main className="flex-grow">
-        <Hero onOpenConsultation={() => handleOpenConsultation()} />
-        <Stats />
-        <ServicesSection 
-          onSelectService={(s) => handleOpenConsultation(s)} 
-          activeTab={selectedServiceTab}
-          onTabChange={handleSelectServiceTab}
+      {/* Main Website Content (Completely hidden/invisible until intro finishes) */}
+      <div className={`flex flex-col flex-grow transition-opacity duration-700 ${introRevealed ? "opacity-100" : "opacity-0 pointer-events-none"}`}>
+        {/* Navigation */}
+        <Navbar 
+          onOpenConsultation={() => handleOpenConsultation()} 
+          onSelectServiceTab={handleSelectServiceTab}
         />
-        <WhyUs />
-        {/* Cost Calculator Section (Hidden on request - code preserved for future reactivation) */}
-        {/* <CostCalculator onPlanSelected={handlePlanSelected} /> */}
-        <ClientsCarousel />
-        <PartnersSection />
-        <Testimonials />
-        <ContactSection 
-          initialService={selectedService}
-          selectedPlan={calculatorPlan}
-          onClearPlan={() => setCalculatorPlan(null)}
+
+        {/* Main Page Sections */}
+        <main className="flex-grow">
+          <Hero onOpenConsultation={() => handleOpenConsultation()} />
+          <Stats />
+          <ServicesSection 
+            onSelectService={(s) => handleOpenConsultation(s)} 
+            activeTab={selectedServiceTab}
+            onTabChange={handleSelectServiceTab}
+          />
+          <WhyUs />
+          {/* Cost Calculator Section (Hidden on request - code preserved for future reactivation) */}
+          {/* <CostCalculator onPlanSelected={handlePlanSelected} /> */}
+          <ClientsCarousel />
+          <PartnersSection />
+          <Testimonials />
+          <ContactSection 
+            initialService={selectedService}
+            selectedPlan={calculatorPlan}
+            onClearPlan={() => setCalculatorPlan(null)}
+          />
+        </main>
+
+        {/* Footer */}
+        <Footer onSelectServiceTab={handleSelectServiceTab} />
+
+        {/* Interactive Modal (for navbar / hero consultation triggers) */}
+        <ConsultationModal
+          isOpen={modalOpen}
+          onClose={() => setModalOpen(false)}
+          defaultService={selectedService}
+          planDetails={calculatorPlan}
         />
-      </main>
-
-      {/* Footer */}
-      <Footer onSelectServiceTab={handleSelectServiceTab} />
-
-      {/* Interactive Modal (for navbar / hero consultation triggers) */}
-      <ConsultationModal
-        isOpen={modalOpen}
-        onClose={() => setModalOpen(false)}
-        defaultService={selectedService}
-        planDetails={calculatorPlan}
-      />
+      </div>
     </div>
   );
 }
@@ -116,4 +123,3 @@ export default function Home() {
     </LanguageProvider>
   );
 }
-

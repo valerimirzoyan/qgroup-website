@@ -4,9 +4,13 @@ import React, { useState, useEffect } from "react";
 
 interface OpeningAnimationProps {
   onComplete?: () => void;
+  onStartFadeOut?: () => void;
 }
 
-export const OpeningAnimation: React.FC<OpeningAnimationProps> = ({ onComplete }) => {
+export const OpeningAnimation: React.FC<OpeningAnimationProps> = ({ 
+  onComplete,
+  onStartFadeOut 
+}) => {
   // Animation phases:
   // 1: 'fullscreen-spawn' (giant logo covering the whole screen, pulsing in center)
   // 2: 'center-minimise' (smoothly shrinks down from fullscreen to normal centered size)
@@ -21,6 +25,30 @@ export const OpeningAnimation: React.FC<OpeningAnimationProps> = ({ onComplete }
 
   const [typedText, setTypedText] = useState("");
   const fullText = "Q Group";
+
+  // Lock scroll completely on body and html while opening animation is active
+  useEffect(() => {
+    if (phase !== "hidden") {
+      document.documentElement.style.overflow = "hidden";
+      document.documentElement.style.height = "100%";
+      document.body.style.overflow = "hidden";
+      document.body.style.height = "100%";
+      document.body.style.touchAction = "none";
+    } else {
+      document.documentElement.style.overflow = "";
+      document.documentElement.style.height = "";
+      document.body.style.overflow = "";
+      document.body.style.height = "";
+      document.body.style.touchAction = "";
+    }
+    return () => {
+      document.documentElement.style.overflow = "";
+      document.documentElement.style.height = "";
+      document.body.style.overflow = "";
+      document.body.style.height = "";
+      document.body.style.touchAction = "";
+    };
+  }, [phase]);
 
   useEffect(() => {
     // Step 1: Start giant fullscreen in center, then smoothly minimise
@@ -68,6 +96,7 @@ export const OpeningAnimation: React.FC<OpeningAnimationProps> = ({ onComplete }
     if (phase === "reveal-tagline") {
       const timerFade = setTimeout(() => {
         setPhase("fade-out");
+        if (onStartFadeOut) onStartFadeOut();
       }, 700);
 
       const timerFinish = setTimeout(() => {
@@ -80,13 +109,13 @@ export const OpeningAnimation: React.FC<OpeningAnimationProps> = ({ onComplete }
         clearTimeout(timerFinish);
       };
     }
-  }, [phase, onComplete]);
+  }, [phase, onComplete, onStartFadeOut]);
 
   if (phase === "hidden") return null;
 
   return (
     <div
-      className={`fixed inset-0 z-[9999] bg-[#080d1a] flex items-center justify-center overflow-hidden transition-all duration-800 ${
+      className={`fixed inset-0 w-screen h-screen z-[99999] bg-[#080d1a] flex items-center justify-center overflow-hidden touch-none select-none transition-all duration-800 ${
         phase === "fade-out"
           ? "opacity-0 scale-105 pointer-events-none blur-sm"
           : "opacity-100 scale-100"
@@ -173,20 +202,6 @@ export const OpeningAnimation: React.FC<OpeningAnimationProps> = ({ onComplete }
         </div>
 
       </div>
-
-      {/* Discreet Skip Button in bottom corner */}
-      <button
-        onClick={() => {
-          setPhase("fade-out");
-          setTimeout(() => {
-            setPhase("hidden");
-            if (onComplete) onComplete();
-          }, 400);
-        }}
-        className="absolute bottom-6 right-6 text-xs text-slate-400 hover:text-white px-3 py-1.5 rounded-lg bg-slate-900/60 border border-slate-800 backdrop-blur-md transition-colors cursor-pointer"
-      >
-        Skip
-      </button>
     </div>
   );
 };
