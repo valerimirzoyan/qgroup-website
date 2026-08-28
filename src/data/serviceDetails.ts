@@ -43,9 +43,9 @@ export const serviceDetailsData: Record<string, ServiceDetailItem> = {
       ru: "Комплексный IT Аутсорсинг",
     },
     title: {
-      en: "IT Outsourcing Services in Armenia",
-      hy: "ՏՏ Աութսորսինգ Ծառայություններ Հայաստանում",
-      ru: "Услуги IT-аутсорсинга в Армении",
+      en: "IT Outsourcing Services",
+      hy: "ՏՏ Աութսորսինգ Ծառայություններ",
+      ru: "Услуги IT-аутсорсинга",
     },
     tagline: {
       en: "Focus on growing your business — we will take care of your IT.",
@@ -442,8 +442,8 @@ export const serviceDetailsData: Record<string, ServiceDetailItem> = {
       ru: "Управление, Риски и Комплаенс",
     },
     title: {
-      en: "GRC Services in Armenia",
-      hy: "GRC Ծառայություններ Հայաստանում",
+      en: "GRC Services (Governance, Risk & Compliance)",
+      hy: "GRC Ծառայություններ (Կառավարում, Ռիսկեր, Համապատասխանություն)",
       ru: "Услуги GRC (Governance, Risk, Compliance)",
     },
     tagline: {
