@@ -64,7 +64,7 @@ export const ConsultationModal: React.FC<ConsultationModalProps> = ({
     };
 
     try {
-      const res = await fetch("https://formsubmit.co/ajax/valerimirzoyan2004@gmail.com", {
+      const res = await fetch("https://formsubmit.co/ajax/info@q-group.am", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
