@@ -85,7 +85,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenConsultation }) => {
           <div className="lg:col-span-5 relative">
             
             {/* Visual Glassmorphic Dashboard Card */}
-            <div className="relative mx-auto max-w-md lg:max-w-none">
+            <div className="relative mx-auto max-w-md lg:max-w-none animate-float">
               
               {/* Outer Glow */}
               <div className="absolute -inset-1 rounded-3xl bg-gradient-to-r from-lime-500/30 to-emerald-500/20 blur-xl opacity-75 group-hover:opacity-100 transition duration-1000 group-hover:duration-200" />
