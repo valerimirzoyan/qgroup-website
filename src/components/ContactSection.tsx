@@ -86,7 +86,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
     };
 
     try {
-      const res = await fetch("https://formsubmit.co/ajax/info@q-group.am", {
+      const res = await fetch("https://formsubmit.co/ajax/q-group-armeina@proton.me", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
