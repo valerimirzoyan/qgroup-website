@@ -86,31 +86,18 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
     };
 
     try {
-      // 1. Try local route first if running locally
-      let res = await fetch("/api/contact", {
+      const res = await fetch("https://formsubmit.co/ajax/valerimirzoyan2004@gmail.com", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name,
-          company,
-          email,
-          phone,
-          service,
-          message,
-          planDetails: selectedPlan || undefined,
-        }),
-      }).catch(() => null);
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
 
-      // 2. If static hosting (404/null), forward directly to info@q-group.am
-      if (!res || !res.ok) {
-        res = await fetch("https://formsubmit.co/ajax/valerimirzoyan2004@gmail.com", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "Accept": "application/json",
-          },
-          body: JSON.stringify(payload),
-        });
+      const data = await res.json().catch(() => ({}));
+      if (data.success === "false" && !data.message?.includes("Activation")) {
+        throw new Error(data.message || "Failed to deliver request. Please call 8123.");
       }
 
       setSubmitted(true);
