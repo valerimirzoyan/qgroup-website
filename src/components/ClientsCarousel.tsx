@@ -12,85 +12,97 @@ export const ClientsCarousel: React.FC = () => {
     { 
       name: "ECCO", 
       category: "Global Footwear", 
-      src: "/images/clients/ecco.png",
+      monoSrc: "/images/clients/ecco.png",
+      colorSrc: "/images/clients/ecco-orig.png",
       alt: "ECCO Armenia IT Partner",
       url: "https://ecco.am/",
     },
     { 
       name: "Karas Wines", 
       category: "Winery & Export", 
-      src: "/images/clients/karas.png",
+      monoSrc: "/images/clients/karas.png",
+      colorSrc: "/images/clients/karas-orig.png",
       alt: "Karas Wines IT Infrastructure",
       url: "https://karaswines.com/",
     },
     { 
       name: "Dargett", 
       category: "Craft Brewery & Hospitality", 
-      src: "/images/clients/dargett.jpg",
+      monoSrc: "/images/clients/dargett.png",
+      colorSrc: "/images/clients/dargett-orig.jpg",
       alt: "Dargett Craft Brewery",
       url: "https://dargett.com/",
     },
     { 
       name: "Coffee Shop Company", 
       category: "Café Chain", 
-      src: "/images/clients/coffee-shop.png",
+      monoSrc: "/images/clients/coffee-shop.png",
+      colorSrc: "/images/clients/coffee-shop-orig.png",
       alt: "Coffee Shop Company Armenia",
       url: "https://coffeeshopcompany.am/",
     },
     { 
       name: "Rouge", 
       category: "Luxury Cosmetics", 
-      src: "/images/clients/rouge.png",
+      monoSrc: "/images/clients/rouge.png",
+      colorSrc: "/images/clients/rouge-orig.png",
       alt: "Rouge Perfumery & Cosmetics",
       url: "https://rouge.am/",
     },
     { 
       name: "Guess", 
       category: "Fashion Retail", 
-      src: "/images/clients/guess.jpg",
+      monoSrc: "/images/clients/guess.png",
+      colorSrc: "/images/clients/guess-orig.jpg",
       alt: "Guess Armenia Retail IT",
       url: "https://guess.am/",
     },
     { 
       name: "Сыроварня", 
       category: "Restaurant Group", 
-      src: "/images/clients/sirovarnya.jpeg",
+      monoSrc: "/images/clients/sirovarnya.png",
+      colorSrc: "/images/clients/sirovarnya-orig.jpeg",
       alt: "Sirovarnya Restaurant Yerevan",
       url: "https://syrovarnya.com/",
     },
     { 
       name: "Rare Water", 
       category: "Beverage Production", 
-      src: "/images/clients/rare-water.png",
+      monoSrc: "/images/clients/rare-water.png",
+      colorSrc: "/images/clients/rare-water-orig.png",
       alt: "Rare Water Armenia",
       url: "https://rarewater.am/",
     },
     { 
-      name: "CUBE", 
-      category: "Architecture & Design", 
-      src: "/images/clients/cub.svg",
-      alt: "CUBE Architecture",
-      url: "https://cub.am/",
+      name: "Cube Invest", 
+      category: "Investment & Financial", 
+      monoSrc: "/images/clients/cub.png",
+      colorSrc: "/images/clients/cub-orig.svg",
+      alt: "Cube Invest",
+      url: "https://cubeinvest.am/",
     },
     { 
       name: "Parvanyan Consulting", 
       category: "Advisory & Audit", 
-      src: "/images/clients/parvanyan.png",
+      monoSrc: "/images/clients/parvanyan.png",
+      colorSrc: "/images/clients/parvanyan-orig.png",
       alt: "Parvanyan Consulting",
       url: "https://parvanyan.am/",
     },
     { 
       name: "Yasaman", 
       category: "Hospitality & Cuisine", 
-      src: "/images/clients/yasaman.png",
+      monoSrc: "/images/clients/yasaman.png",
+      colorSrc: "/images/clients/yasaman-orig.png",
       alt: "Yasaman Restaurant Yerevan",
       url: "https://yasaman.am/",
     },
     { 
-      name: "Center of Excellence", 
-      category: "Education & Tech", 
-      src: "/images/clients/coe.svg",
-      alt: "Center of Excellence (COE)",
+      name: "Council of Europe", 
+      category: "International Organization", 
+      monoSrc: "/images/clients/coe.png",
+      colorSrc: "/images/clients/coe-orig.svg",
+      alt: "Council of Europe (COE)",
       url: "https://www.coe.int/",
     },
   ];
@@ -129,15 +141,25 @@ export const ClientsCarousel: React.FC = () => {
               href={client.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex-shrink-0 w-56 h-32 rounded-2xl bg-white/[0.03] hover:bg-white/[0.07] border border-white/10 hover:border-lime-500/40 p-4 flex flex-col justify-center items-center text-center transition-all duration-300 hover:scale-105 group backdrop-blur-sm shadow-md cursor-pointer"
+              className="flex-shrink-0 w-56 h-32 rounded-2xl bg-white/[0.03] hover:bg-white/[0.08] border border-white/10 hover:border-lime-500/40 p-4 flex flex-col justify-center items-center text-center transition-all duration-300 hover:scale-105 group backdrop-blur-sm shadow-md cursor-pointer relative"
             >
-              <div className="relative w-36 h-14 flex items-center justify-center">
+              {/* Logo Dual Container: Monochrome default with smooth cross-fade to full-color on hover */}
+              <div className="relative w-36 h-14 flex items-center justify-center overflow-hidden">
+                {/* 1. Monochrome / B&W resting logo */}
                 <img
-                  src={client.src}
+                  src={client.monoSrc}
                   alt={client.alt}
-                  className="max-h-12 max-w-full object-contain filter grayscale invert brightness-200 contrast-125 opacity-75 group-hover:opacity-100 group-hover:grayscale-0 group-hover:invert-0 group-hover:brightness-100 transition-all duration-300"
+                  className="max-h-12 max-w-full object-contain opacity-70 group-hover:opacity-0 transition-opacity duration-300 pointer-events-none filter drop-shadow-[0_0_1px_rgba(255,255,255,0.15)]"
+                />
+
+                {/* 2. Authentic Original Colored hover logo */}
+                <img
+                  src={client.colorSrc}
+                  alt={client.alt}
+                  className="absolute max-h-12 max-w-full object-contain opacity-0 group-hover:opacity-100 group-hover:scale-105 transition-all duration-300 pointer-events-none rounded-lg"
                 />
               </div>
+
               <span className="text-[11px] font-semibold text-slate-400 mt-2 tracking-wider group-hover:text-lime-400 transition-colors line-clamp-1">
                 {client.name}
               </span>
