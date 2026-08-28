@@ -2,7 +2,7 @@
 
 import React from "react";
 import { useLanguage } from "@/data/LanguageContext";
-import { ShieldCheck, Cpu, CheckCircle2, Award, Zap, ExternalLink } from "lucide-react";
+import { ShieldCheck, Cpu, CheckCircle2, Award, Zap } from "lucide-react";
 
 export const PartnersSection: React.FC = () => {
   const { t } = useLanguage();
@@ -113,11 +113,6 @@ export const PartnersSection: React.FC = () => {
               rel="noopener noreferrer"
               className="group relative p-4 rounded-2xl bg-slate-900/80 border border-slate-800 hover:border-lime-500/50 hover:bg-slate-900 transition-all duration-300 flex flex-col items-center justify-between text-center shadow-lg hover:shadow-lime-500/10 hover:-translate-y-1 backdrop-blur-sm cursor-pointer"
             >
-              {/* External Link Hover Icon */}
-              <div className="absolute top-2.5 right-2.5 opacity-0 group-hover:opacity-100 transition-opacity">
-                <ExternalLink className="w-3 h-3 text-lime-400" />
-              </div>
-
               {/* Logo Presentation Box */}
               <div className="w-full h-14 bg-white/95 rounded-xl p-2 flex items-center justify-center mb-3 shadow-inner group-hover:bg-white transition-colors">
                 <img
