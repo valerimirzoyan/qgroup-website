@@ -13,8 +13,7 @@ import {
   Check, 
   Sparkles,
   Layers,
-  Info,
-  Maximize2
+  Info
 } from "lucide-react";
 
 interface ServicesSectionProps {
@@ -219,11 +218,6 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({
               >
                 {/* Subtle top gradient accent */}
                 <div className={`absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r ${service.color}`} />
-
-                {/* Corner Expand Indicator */}
-                <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity p-1.5 rounded-lg bg-slate-800/80 text-lime-400">
-                  <Maximize2 className="w-3.5 h-3.5" />
-                </div>
 
                 <div className="space-y-6">
                   
