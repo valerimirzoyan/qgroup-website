@@ -138,33 +138,27 @@ export const OpeningAnimation: React.FC<OpeningAnimationProps> = ({ onComplete }
           </div>
         </div>
 
-        {/* Text Container: Positioned on the Right of Logo */}
+        {/* Text Container: Positioned on the Right of Logo (Clean, No Highlight) */}
         <div
-          className={`flex flex-col justify-center overflow-hidden transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] relative ${
+          className={`flex flex-col justify-center overflow-hidden transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] ${
             phase === "fullscreen-spawn" || phase === "center-minimise"
               ? "w-0 opacity-0"
               : "w-auto opacity-100"
           }`}
         >
-          {/* Subtle text ambient glow when revealed */}
-          <div className="absolute inset-0 bg-lime-500/10 blur-[80px] -z-10 pointer-events-none" />
-
-          {/* Typed 'Q Group' Headline */}
+          {/* Typed 'Q Group' Headline - Crisp Solid White */}
           <div className="flex items-center">
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-white whitespace-nowrap">
-              <span className="text-white">Q </span>
-              <span className="text-gradient">
-                {typedText.length > 2 ? typedText.slice(2) : ""}
-              </span>
+              {typedText}
             </h1>
 
-            {/* Glowing Blinking Typing Cursor */}
+            {/* Blinking Typing Cursor */}
             {phase === "typing" && (
-              <span className="inline-block w-1 sm:w-1.5 h-8 sm:h-10 md:h-12 bg-lime-400 ml-1.5 animate-pulse rounded-full shadow-[0_0_12px_#a3e635]" />
+              <span className="inline-block w-1 sm:w-1.5 h-8 sm:h-10 md:h-12 bg-lime-400 ml-1.5 animate-pulse rounded-full" />
             )}
           </div>
 
-          {/* Subtitle Tagline (Fades in smoothly on completion) */}
+          {/* Subtitle Tagline - Clean Crisp Slate */}
           <div
             className={`transition-all duration-600 ease-out pt-1 ${
               phase === "reveal-tagline" || phase === "fade-out"
@@ -172,7 +166,7 @@ export const OpeningAnimation: React.FC<OpeningAnimationProps> = ({ onComplete }
                 : "opacity-0 translate-y-2"
             }`}
           >
-            <p className="text-[10px] sm:text-xs md:text-sm font-bold tracking-[0.25em] text-lime-400 uppercase whitespace-nowrap">
+            <p className="text-[10px] sm:text-xs md:text-sm font-semibold tracking-[0.25em] text-slate-400 uppercase whitespace-nowrap">
               IT Infrastructure & Security
             </p>
           </div>
