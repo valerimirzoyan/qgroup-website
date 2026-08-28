@@ -18,12 +18,12 @@ export const ClientsCarousel: React.FC = () => {
       url: "https://ecco.am/",
     },
     { 
-      name: "Karas Wines", 
+      name: "Karas", 
       category: "Winery & Export", 
       monoSrc: "/images/clients/karas.png",
       colorSrc: "/images/clients/karas-orig.png",
-      alt: "Karas Wines IT Infrastructure",
-      url: "https://karaswines.com/",
+      alt: "Karas IT Infrastructure",
+      url: "https://karas.am/",
     },
     { 
       name: "Dargett", 
@@ -55,14 +55,14 @@ export const ClientsCarousel: React.FC = () => {
       monoSrc: "/images/clients/guess.png",
       colorSrc: "/images/clients/guess-orig.jpg",
       alt: "Guess Armenia Retail IT",
-      url: "https://guess.am/",
+      url: "https://www.guess.eu/",
     },
     { 
-      name: "Сыроварня", 
+      name: "Syrovarnya", 
       category: "Restaurant Group", 
       monoSrc: "/images/clients/sirovarnya.png",
       colorSrc: "/images/clients/sirovarnya-orig.jpeg",
-      alt: "Sirovarnya Restaurant Yerevan",
+      alt: "Syrovarnya Restaurant Yerevan",
       url: "https://syrovarnya.com/",
     },
     { 
@@ -71,7 +71,7 @@ export const ClientsCarousel: React.FC = () => {
       monoSrc: "/images/clients/rare-water.png",
       colorSrc: "/images/clients/rare-water-orig.png",
       alt: "Rare Water Armenia",
-      url: "https://rarewater.am/",
+      url: "https://rare-water.com/",
     },
     { 
       name: "Cube Invest", 
@@ -87,7 +87,7 @@ export const ClientsCarousel: React.FC = () => {
       monoSrc: "/images/clients/parvanyan.png",
       colorSrc: "/images/clients/parvanyan-orig.png",
       alt: "Parvanyan Consulting",
-      url: "https://parvanyan.am/",
+      url: "https://pconsult.am/",
     },
     { 
       name: "Yasaman", 
