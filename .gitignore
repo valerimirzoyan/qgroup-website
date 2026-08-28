@@ -1,15 +1,24 @@
 # ==============================================================================
-# Security & Environment Variables (NEVER COMMIT SECRETS)
+# Security & Environment Variables (NEVER COMMIT SECRETS / PERSONAL DATA)
 # ==============================================================================
 .env
+.env*
 .env*.local
+.env.local
 .env.development
+.env.development.local
 .env.test
+.env.test.local
 .env.production
+.env.production.local
 .env.staging
 *.env
 *.env.*
 *.local
+*.personal.*
+*.private.*
+*.secret*
+*.token*
 
 # Private Keys, Certificates, and Credentials
 *.pem
@@ -26,6 +35,11 @@
 *secret*.json
 google-services.json
 GoogleService-Info.plist
+
+# Local Data, Customer Inquiries & Leads Storage
+data/
+data/leads.json
+*.leads.json
 
 # ==============================================================================
 # Dependencies
@@ -84,7 +98,7 @@ coverage/
 .nyc_output/
 
 # ==============================================================================
-# Operating System & IDE Specific Files
+# Operating System & IDE Specific Files (Hardware & Personal Traces)
 # ==============================================================================
 .DS_Store
 .DS_Store?
@@ -95,7 +109,7 @@ ehthumbs.db
 Thumbs.db
 Desktop.ini
 
-# IDEs
+# IDEs & Editors
 .idea/
 .vscode/
 *.sublime-project

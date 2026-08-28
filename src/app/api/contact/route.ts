@@ -63,7 +63,7 @@ export async function POST(req: Request) {
     const safeMessage = (message || "").slice(0, 3000);
 
     const timestamp = new Date().toISOString();
-    const receiverEmail = process.env.CONTACT_RECEIVER_EMAIL || "valerimirzoyan2004@gmail.com";
+    const receiverEmail = process.env.CONTACT_RECEIVER_EMAIL || "info@q-group.am";
 
     // 2. Build sanitized HTML email template
     const planHtml = planDetails
