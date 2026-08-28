@@ -79,27 +79,6 @@ export const Hero: React.FC<HeroProps> = ({ onOpenConsultation }) => {
                 <span>{t("nav.services")}</span>
               </a>
             </div>
-
-            {/* Key Value Micro-Badges */}
-            <div className="pt-6 border-t border-slate-800/80 grid grid-cols-2 sm:grid-cols-4 gap-3 text-left">
-              <div className="flex items-center gap-2">
-                <CheckCircle2 className="w-4 h-4 text-lime-400 shrink-0" />
-                <span className="text-xs text-slate-300 font-medium">{t("hero.stat_uptime")}</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Clock className="w-4 h-4 text-lime-400 shrink-0" />
-                <span className="text-xs text-slate-300 font-medium">{t("hero.stat_response")}</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Server className="w-4 h-4 text-lime-400 shrink-0" />
-                <span className="text-xs text-slate-300 font-medium">{t("hero.stat_clients")}</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <ShieldCheck className="w-4 h-4 text-lime-400 shrink-0" />
-                <span className="text-xs text-slate-300 font-medium">{t("hero.stat_experience")}</span>
-              </div>
-            </div>
-
           </div>
 
           {/* Right Column: Interactive Tech Command Center Card */}
