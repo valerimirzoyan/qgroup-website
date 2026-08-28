@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { useLanguage } from "@/data/LanguageContext";
 import confetti from "canvas-confetti";
-import { X, CheckCircle2, Send, ShieldCheck, Sparkles, AlertCircle, Clock } from "lucide-react";
+import { X, CheckCircle2, Send, ShieldCheck, AlertCircle, Clock } from "lucide-react";
 
 interface ConsultationModalProps {
   isOpen: boolean;
@@ -165,74 +165,74 @@ export const ConsultationModal: React.FC<ConsultationModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 overflow-y-auto">
       {/* Backdrop */}
       <div
         onClick={handleModalClose}
         className="fixed inset-0 bg-slate-950/80 backdrop-blur-md transition-opacity"
       />
 
-      {/* Modal Container */}
-      <div className="relative w-full max-w-lg rounded-3xl bg-slate-900 border border-slate-700/80 p-6 sm:p-8 shadow-2xl z-10 animate-in fade-in zoom-in-95 duration-200">
+      {/* Modal Container with Responsive Mobile Max-Height and Internal Scroll */}
+      <div className="relative w-full max-w-lg max-h-[92vh] flex flex-col rounded-2xl sm:rounded-3xl bg-slate-900 border border-slate-700/80 p-4 sm:p-7 shadow-2xl z-10 animate-in fade-in zoom-in-95 duration-200 overflow-y-auto">
         
         {/* Close Button */}
         <button
           onClick={handleModalClose}
-          className="absolute top-5 right-5 p-2 rounded-xl bg-slate-800 text-slate-400 hover:text-white hover:bg-slate-700 transition cursor-pointer"
+          className="absolute top-3.5 right-3.5 sm:top-5 sm:right-5 p-1.5 sm:p-2 rounded-xl bg-slate-800 text-slate-400 hover:text-white hover:bg-slate-700 transition cursor-pointer z-20"
           aria-label="Close"
         >
-          <X className="w-5 h-5" />
+          <X className="w-4 h-4 sm:w-5 sm:h-5" />
         </button>
 
         {submitted ? (
-          <div className="py-8 text-center space-y-4">
-            <div className="w-16 h-16 rounded-2xl bg-lime-500/20 border border-lime-500 text-lime-400 mx-auto flex items-center justify-center shadow-lg shadow-lime-500/20 animate-bounce">
-              <CheckCircle2 className="w-8 h-8" />
+          <div className="py-6 sm:py-8 text-center space-y-3 sm:space-y-4 my-auto">
+            <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-lime-500/20 border border-lime-500 text-lime-400 mx-auto flex items-center justify-center shadow-lg shadow-lime-500/20 animate-bounce">
+              <CheckCircle2 className="w-7 h-7 sm:w-8 sm:h-8" />
             </div>
-            <h3 className="text-2xl font-extrabold text-white">
+            <h3 className="text-xl sm:text-2xl font-extrabold text-white">
               {t("form.success_title")}
             </h3>
-            <p className="text-sm text-slate-300 max-w-sm mx-auto leading-relaxed">
+            <p className="text-xs sm:text-sm text-slate-300 max-w-sm mx-auto leading-relaxed">
               {t("form.success_desc")}
             </p>
 
             {/* 5-second auto-close countdown badge */}
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-800 border border-slate-700 text-xs font-semibold text-lime-400">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-800 border border-slate-700 text-[11px] sm:text-xs font-semibold text-lime-400">
               <Clock className="w-3.5 h-3.5" />
               <span>Closing in {countdown}s...</span>
             </div>
 
-            <div className="pt-3">
+            <div className="pt-2 sm:pt-3">
               <button
                 onClick={handleModalClose}
-                className="px-6 py-2.5 rounded-xl bg-lime-500 text-slate-950 font-bold text-sm hover:bg-lime-400 transition cursor-pointer"
+                className="px-5 sm:px-6 py-2 sm:py-2.5 rounded-xl bg-lime-500 text-slate-950 font-bold text-xs sm:text-sm hover:bg-lime-400 transition cursor-pointer"
               >
                 {t("form.modal_close")}
               </button>
             </div>
           </div>
         ) : (
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-3 sm:space-y-4 my-auto">
             
-            <div>
-              <h3 className="text-xl font-bold text-white">
+            <div className="pr-8 sm:pr-0">
+              <h3 className="text-lg sm:text-xl font-extrabold text-white leading-tight">
                 {t("contact.form_title")}
               </h3>
-              <p className="text-xs text-slate-400 mt-1 font-medium">
+              <p className="text-[11px] sm:text-xs text-slate-400 mt-1 font-medium leading-relaxed">
                 {t("contact.form_subtitle")}
               </p>
             </div>
 
             {errorMessage && (
-              <div className="p-3.5 rounded-xl bg-red-500/10 border border-red-500/30 text-xs text-red-400 flex items-center gap-2">
+              <div className="p-3 rounded-xl bg-red-500/10 border border-red-500/30 text-xs text-red-400 flex items-center gap-2">
                 <AlertCircle className="w-4 h-4 shrink-0" />
                 <span>{errorMessage}</span>
               </div>
             )}
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3">
               <div>
-                <label className="block text-xs font-bold text-slate-300 mb-1">
+                <label className="block text-[11px] sm:text-xs font-bold text-slate-300 mb-1">
                   {t("form.name")} <span className="text-lime-400">*</span>
                 </label>
                 <input
@@ -241,12 +241,12 @@ export const ConsultationModal: React.FC<ConsultationModalProps> = ({
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   placeholder={t("form.name_placeholder")}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-800/80 border border-slate-700 text-white placeholder-slate-500 text-xs focus:outline-none focus:border-lime-500 transition"
+                  className="w-full px-3.5 py-2 sm:py-2.5 rounded-xl bg-slate-800/80 border border-slate-700 text-white placeholder-slate-500 text-xs sm:text-sm focus:outline-none focus:border-lime-500 transition"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-slate-300 mb-1">
+                <label className="block text-[11px] sm:text-xs font-bold text-slate-300 mb-1">
                   {t("form.company")} <span className="text-lime-400">*</span>
                 </label>
                 <input
@@ -255,14 +255,14 @@ export const ConsultationModal: React.FC<ConsultationModalProps> = ({
                   value={company}
                   onChange={(e) => setCompany(e.target.value)}
                   placeholder={t("form.company_placeholder")}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-800/80 border border-slate-700 text-white placeholder-slate-500 text-xs focus:outline-none focus:border-lime-500 transition"
+                  className="w-full px-3.5 py-2 sm:py-2.5 rounded-xl bg-slate-800/80 border border-slate-700 text-white placeholder-slate-500 text-xs sm:text-sm focus:outline-none focus:border-lime-500 transition"
                 />
               </div>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3">
               <div>
-                <label className="block text-xs font-bold text-slate-300 mb-1">
+                <label className="block text-[11px] sm:text-xs font-bold text-slate-300 mb-1">
                   {t("form.phone")} <span className="text-lime-400">*</span>
                 </label>
                 <input
@@ -271,12 +271,12 @@ export const ConsultationModal: React.FC<ConsultationModalProps> = ({
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
                   placeholder={t("form.phone_placeholder")}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-800/80 border border-slate-700 text-white placeholder-slate-500 text-xs focus:outline-none focus:border-lime-500 transition"
+                  className="w-full px-3.5 py-2 sm:py-2.5 rounded-xl bg-slate-800/80 border border-slate-700 text-white placeholder-slate-500 text-xs sm:text-sm focus:outline-none focus:border-lime-500 transition"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-slate-300 mb-1">
+                <label className="block text-[11px] sm:text-xs font-bold text-slate-300 mb-1">
                   {t("form.email")} <span className="text-lime-400">*</span>
                 </label>
                 <input
@@ -285,19 +285,19 @@ export const ConsultationModal: React.FC<ConsultationModalProps> = ({
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder={t("form.email_placeholder")}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-800/80 border border-slate-700 text-white placeholder-slate-500 text-xs focus:outline-none focus:border-lime-500 transition"
+                  className="w-full px-3.5 py-2 sm:py-2.5 rounded-xl bg-slate-800/80 border border-slate-700 text-white placeholder-slate-500 text-xs sm:text-sm focus:outline-none focus:border-lime-500 transition"
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-slate-300 mb-1">
+              <label className="block text-[11px] sm:text-xs font-bold text-slate-300 mb-1">
                 {t("form.service")}
               </label>
               <select
                 value={service}
                 onChange={(e) => setService(e.target.value)}
-                className="w-full px-3.5 py-2.5 rounded-xl bg-slate-800/80 border border-slate-700 text-white text-xs focus:outline-none focus:border-lime-500 transition cursor-pointer"
+                className="w-full px-3.5 py-2 sm:py-2.5 rounded-xl bg-slate-800/80 border border-slate-700 text-white text-xs sm:text-sm focus:outline-none focus:border-lime-500 transition cursor-pointer"
               >
                 {planDetails && (
                   <option value={`Custom Plan (${planDetails.workstations} PCs, ${planDetails.servers} Servers)`}>
@@ -314,33 +314,33 @@ export const ConsultationModal: React.FC<ConsultationModalProps> = ({
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-slate-300 mb-1">
+              <label className="block text-[11px] sm:text-xs font-bold text-slate-300 mb-1">
                 {t("form.message")}
               </label>
               <textarea
-                rows={3}
+                rows={2}
                 value={notes}
                 onChange={(e) => setNotes(e.target.value)}
                 placeholder={t("form.message_placeholder")}
-                className="w-full px-3.5 py-2.5 rounded-xl bg-slate-800/80 border border-slate-700 text-white placeholder-slate-500 text-xs focus:outline-none focus:border-lime-500 transition resize-none"
+                className="w-full px-3.5 py-2 sm:py-2.5 rounded-xl bg-slate-800/80 border border-slate-700 text-white placeholder-slate-500 text-xs sm:text-sm focus:outline-none focus:border-lime-500 transition resize-none"
               />
             </div>
 
             {planDetails && (
-              <div className="p-3 rounded-xl bg-lime-500/10 border border-lime-500/30 text-xs text-lime-300 flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <ShieldCheck className="w-4 h-4 text-lime-400" />
-                  <span>Custom Plan attached</span>
+              <div className="p-2.5 sm:p-3 rounded-xl bg-lime-500/10 border border-lime-500/30 text-xs text-lime-300 flex items-center justify-between">
+                <div className="flex items-center gap-1.5">
+                  <ShieldCheck className="w-4 h-4 text-lime-400 shrink-0" />
+                  <span className="truncate">Custom Plan attached</span>
                 </div>
-                <span className="font-bold">~{planDetails.estimatedCost.toLocaleString()} AMD/mo</span>
+                <span className="font-bold shrink-0">~{planDetails.estimatedCost.toLocaleString()} AMD/mo</span>
               </div>
             )}
 
-            <div className="pt-2">
+            <div className="pt-1.5 sm:pt-2">
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full py-3.5 px-4 rounded-xl bg-lime-500 hover:bg-lime-400 text-slate-950 font-extrabold text-sm transition duration-300 flex items-center justify-center gap-2 shadow-lg shadow-lime-500/20 disabled:opacity-50 cursor-pointer"
+                className="w-full py-3 sm:py-3.5 px-4 rounded-xl bg-lime-500 hover:bg-lime-400 text-slate-950 font-extrabold text-xs sm:text-sm transition duration-300 flex items-center justify-center gap-2 shadow-lg shadow-lime-500/20 disabled:opacity-50 cursor-pointer"
               >
                 {isSubmitting ? (
                   <>
@@ -350,13 +350,13 @@ export const ConsultationModal: React.FC<ConsultationModalProps> = ({
                 ) : (
                   <>
                     <span>{t("form.submit")}</span>
-                    <Send className="w-4 h-4" />
+                    <Send className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                   </>
                 )}
               </button>
             </div>
 
-            <div className="text-center text-[11px] text-slate-500">
+            <div className="text-center text-[10px] sm:text-[11px] text-slate-500">
               {t("contact.privacy_note")}
             </div>
 
