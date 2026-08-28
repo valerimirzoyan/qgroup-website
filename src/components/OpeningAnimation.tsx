@@ -8,12 +8,12 @@ interface OpeningAnimationProps {
 
 export const OpeningAnimation: React.FC<OpeningAnimationProps> = ({ onComplete }) => {
   // Animation phases:
-  // 1: 'fullscreen-spawn' (giant logo covering the whole screen, pulsing in center)
-  // 2: 'center-minimise' (smoothly shrinks down from fullscreen to normal centered size)
-  // 3: 'shift-left' (logo + ambient highlight glide with buttery smoothness to the left)
-  // 4: 'typing' (types 'Q Group' letter by letter on the right while logo + highlight pulse on the left)
-  // 5: 'reveal-tagline' (subtitle fades in, ambient flare)
-  // 6: 'fade-out' (entire overlay smoothly dissolves)
+  // 1: 'fullscreen-spawn' (giant logo covering the whole screen, centered)
+  // 2: 'center-minimise' (smoothly shrinks down from fullscreen to centered normal scale)
+  // 3: 'shift-left' (logo + ambient highlight glide with buttery smoothness to its left stayed position)
+  // 4: 'typing' (starts writing 'Q Group' letter by letter right after the logo settles on the left)
+  // 5: 'reveal-tagline' (subtitle fades in smoothly with ambient glow)
+  // 6: 'fade-out' (entire overlay smoothly dissolves into the main website)
   // 7: 'hidden' (unmounted)
   const [phase, setPhase] = useState<
     "fullscreen-spawn" | "center-minimise" | "shift-left" | "typing" | "reveal-tagline" | "fade-out" | "hidden"
@@ -37,20 +37,20 @@ export const OpeningAnimation: React.FC<OpeningAnimationProps> = ({ onComplete }
   }, [phase]);
 
   useEffect(() => {
-    // Step 1: Start giant fullscreen in center, then smoothly minimise down to center
+    // Step 1: Start fullscreen centered, then smoothly minimise down to center
     const timerMinimise = setTimeout(() => {
       setPhase("center-minimise");
-    }, 100);
+    }, 80);
 
-    // Step 2: Settle at center with pulse, then glide smoothly to the left
+    // Step 2: Settle at center, then start the smooth glide to the left
     const timerShift = setTimeout(() => {
       setPhase("shift-left");
-    }, 1500);
+    }, 1300);
 
-    // Step 3: Start typing 'Q Group' once the smooth glide has completed
+    // Step 3: Start typing slightly earlier as the logo smoothly settles into place (2100ms)
     const timerTyping = setTimeout(() => {
       setPhase("typing");
-    }, 2800);
+    }, 2100);
 
     return () => {
       clearTimeout(timerMinimise);
@@ -59,7 +59,7 @@ export const OpeningAnimation: React.FC<OpeningAnimationProps> = ({ onComplete }
     };
   }, []);
 
-  // Handle typing effect
+  // Handle smooth typing effect
   useEffect(() => {
     if (phase === "typing") {
       let currentIndex = 0;
@@ -69,9 +69,12 @@ export const OpeningAnimation: React.FC<OpeningAnimationProps> = ({ onComplete }
           currentIndex++;
         } else {
           clearInterval(interval);
-          setPhase("reveal-tagline");
+          // Once text typing finishes, reveal the tagline
+          setTimeout(() => {
+            setPhase("reveal-tagline");
+          }, 150);
         }
-      }, 95); // Smooth typing speed per character
+      }, 100); // Natural smooth typing speed per character
 
       return () => clearInterval(interval);
     }
@@ -85,14 +88,14 @@ export const OpeningAnimation: React.FC<OpeningAnimationProps> = ({ onComplete }
         // Ensure scroll is instantly restored when fade out begins
         document.body.style.overflow = "";
         document.documentElement.style.overflow = "";
-      }, 700);
+      }, 800);
 
       const timerFinish = setTimeout(() => {
         setPhase("hidden");
         document.body.style.overflow = "";
         document.documentElement.style.overflow = "";
         if (onComplete) onComplete();
-      }, 1500);
+      }, 1600);
 
       return () => {
         clearTimeout(timerFade);
@@ -114,9 +117,9 @@ export const OpeningAnimation: React.FC<OpeningAnimationProps> = ({ onComplete }
       {/* Main Lockup Stage */}
       <div className="relative flex items-center justify-center z-10 select-none px-4">
         
-        {/* Logo Container with Buttery-Smooth Minimise & Left-Glide Transitions */}
+        {/* Logo Container: Smooth Minimise to Center -> Butter-Smooth Left Glide */}
         <div
-          className={`transition-all duration-[1400ms] ease-[cubic-bezier(0.16,1,0.3,1)] flex items-center justify-center relative will-change-transform ${
+          className={`transition-all duration-[1150ms] ease-[cubic-bezier(0.22,1,0.36,1)] flex items-center justify-center relative will-change-transform ${
             phase === "fullscreen-spawn"
               ? "scale-[4.2] sm:scale-[4.8] opacity-85"
               : phase === "center-minimise"
@@ -126,7 +129,7 @@ export const OpeningAnimation: React.FC<OpeningAnimationProps> = ({ onComplete }
         >
           {/* Dynamic Green Highlight - Anchored directly to Logo and Moves Left Together */}
           <div
-            className={`absolute pointer-events-none rounded-full bg-lime-500/25 blur-[120px] transition-all duration-[1400ms] ease-[cubic-bezier(0.16,1,0.3,1)] -z-10 ${
+            className={`absolute pointer-events-none rounded-full bg-lime-500/25 blur-[120px] transition-all duration-[1150ms] ease-[cubic-bezier(0.22,1,0.36,1)] -z-10 ${
               phase === "fullscreen-spawn"
                 ? "w-[420px] h-[420px] opacity-100 scale-150"
                 : phase === "reveal-tagline"
@@ -157,12 +160,12 @@ export const OpeningAnimation: React.FC<OpeningAnimationProps> = ({ onComplete }
           </div>
         </div>
 
-        {/* Text Container: Positioned on the Right of Logo (Clean, No Highlight) */}
+        {/* Text Container: Expands Smoothly on the Right of Logo Once Logo Arrives */}
         <div
-          className={`flex flex-col justify-center overflow-hidden transition-all duration-[1400ms] ease-[cubic-bezier(0.16,1,0.3,1)] ${
+          className={`flex flex-col justify-center overflow-hidden transition-all duration-[1150ms] ease-[cubic-bezier(0.22,1,0.36,1)] ${
             phase === "fullscreen-spawn" || phase === "center-minimise"
               ? "max-w-0 opacity-0 -translate-x-2"
-              : "max-w-[400px] opacity-100 translate-x-0"
+              : "max-w-[420px] opacity-100 translate-x-0"
           }`}
         >
           {/* Typed 'Q Group' Headline - Crisp Solid White */}
@@ -179,7 +182,7 @@ export const OpeningAnimation: React.FC<OpeningAnimationProps> = ({ onComplete }
 
           {/* Subtitle Tagline - Clean Crisp Slate */}
           <div
-            className={`transition-all duration-600 ease-out pt-1 ${
+            className={`transition-all duration-700 ease-out pt-1.5 ${
               phase === "reveal-tagline" || phase === "fade-out"
                 ? "opacity-100 translate-y-0"
                 : "opacity-0 translate-y-2"
