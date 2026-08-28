@@ -2,7 +2,7 @@
 
 import React from "react";
 import { useLanguage } from "@/data/LanguageContext";
-import { Building2, Calendar, Clock, Award } from "lucide-react";
+import { Building2, Calendar, Headphones, Clock } from "lucide-react";
 
 export const Stats: React.FC = () => {
   const { t } = useLanguage();
@@ -21,16 +21,16 @@ export const Stats: React.FC = () => {
       highlight: "Continuous Innovation",
     },
     {
-      icon: Clock,
+      icon: Headphones,
       count: t("stats.support_count"),
       label: t("stats.support_label"),
       highlight: "Rapid Dispatch",
     },
     {
-      icon: Award,
+      icon: Clock,
       count: t("stats.sla_count"),
       label: t("stats.sla_label"),
-      highlight: "Contractually Backed",
+      highlight: "Guaranteed SLA",
     },
   ];
 

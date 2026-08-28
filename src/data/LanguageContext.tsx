@@ -67,8 +67,8 @@ export const translations: Record<Language, Record<string, string>> = {
     "stats.exp_label": "Years Experience",
     "stats.support_count": "24/7",
     "stats.support_label": "Monitoring & Incident Support",
-    "stats.sla_count": "99.9%",
-    "stats.sla_label": "SLA Uptime Guarantee",
+    "stats.sla_count": "<15 min",
+    "stats.sla_label": "Response Time SLA",
 
     // Services Section
     "services.badge": "What We Deliver",
@@ -336,8 +336,8 @@ export const translations: Record<Language, Record<string, string>> = {
     "stats.exp_label": "Տարվա փորձ",
     "stats.support_count": "24/7",
     "stats.support_label": "Մոնիտորինգ և աջակցություն",
-    "stats.sla_count": "99.9%",
-    "stats.sla_label": "SLA Անխափանության երաշխիք",
+    "stats.sla_count": "<15 րոպե",
+    "stats.sla_label": "Արձագանքման ժամանակ",
 
     // Services Section
     "services.badge": "Մեր լուծումները",
@@ -605,8 +605,8 @@ export const translations: Record<Language, Record<string, string>> = {
     "stats.exp_label": "Лет на рынке",
     "stats.support_count": "24/7",
     "stats.support_label": "Мониторинг и дежурная смена",
-    "stats.sla_count": "99.9%",
-    "stats.sla_label": "Гарантия по договору SLA",
+    "stats.sla_count": "<15 мин",
+    "stats.sla_label": "Время реакции по SLA",
 
     // Services Section
     "services.badge": "Наши компетенции",
