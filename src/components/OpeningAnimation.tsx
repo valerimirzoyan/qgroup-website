@@ -14,7 +14,7 @@ export const OpeningAnimation: React.FC<OpeningAnimationProps> = ({
   // Animation phases:
   // 1: 'fullscreen-spawn' (giant logo covering the whole screen, pulsing in center)
   // 2: 'center-minimise' (smoothly shrinks down from fullscreen to normal centered size)
-  // 3: 'shift-left' (logo + ambient highlight glide very smoothly to the left together)
+  // 3: 'shift-left' (logo + ambient highlight glide with buttery smoothness to the left)
   // 4: 'typing' (types 'Q Group' letter by letter on the right while logo + highlight pulse on the left)
   // 5: 'reveal-tagline' (subtitle fades in, ambient flare)
   // 6: 'fade-out' (entire overlay smoothly dissolves)
@@ -51,20 +51,20 @@ export const OpeningAnimation: React.FC<OpeningAnimationProps> = ({
   }, [phase]);
 
   useEffect(() => {
-    // Step 1: Start giant fullscreen in center, then smoothly minimise
+    // Step 1: Start giant fullscreen in center, then smoothly minimise down to center
     const timerMinimise = setTimeout(() => {
       setPhase("center-minimise");
-    }, 120);
+    }, 100);
 
-    // Step 2: Once centered, hold pulse, then glide very smoothly to the left
+    // Step 2: Settle at center with pulse, then glide smoothly to the left
     const timerShift = setTimeout(() => {
       setPhase("shift-left");
-    }, 1350);
+    }, 1500);
 
-    // Step 3: Start typing 'Q Group' after the smooth shift
+    // Step 3: Start typing 'Q Group' once the smooth glide has completed
     const timerTyping = setTimeout(() => {
       setPhase("typing");
-    }, 2000);
+    }, 2800);
 
     return () => {
       clearTimeout(timerMinimise);
@@ -102,7 +102,7 @@ export const OpeningAnimation: React.FC<OpeningAnimationProps> = ({
       const timerFinish = setTimeout(() => {
         setPhase("hidden");
         if (onComplete) onComplete();
-      }, 1450);
+      }, 1500);
 
       return () => {
         clearTimeout(timerFade);
@@ -124,9 +124,9 @@ export const OpeningAnimation: React.FC<OpeningAnimationProps> = ({
       {/* Main Lockup Stage */}
       <div className="relative flex items-center justify-center z-10 select-none px-4">
         
-        {/* Logo Container with Ultra-Smooth Minimise & Left-Glide Transitions */}
+        {/* Logo Container with Buttery-Smooth Minimise & Left-Glide Transitions */}
         <div
-          className={`transition-all duration-1100 ease-[cubic-bezier(0.16,1,0.3,1)] flex items-center justify-center relative ${
+          className={`transition-all duration-[1400ms] ease-[cubic-bezier(0.16,1,0.3,1)] flex items-center justify-center relative will-change-transform ${
             phase === "fullscreen-spawn"
               ? "scale-[4.2] sm:scale-[4.8] opacity-85"
               : phase === "center-minimise"
@@ -136,7 +136,7 @@ export const OpeningAnimation: React.FC<OpeningAnimationProps> = ({
         >
           {/* Dynamic Green Highlight - Anchored directly to Logo and Moves Left Together */}
           <div
-            className={`absolute pointer-events-none rounded-full bg-lime-500/25 blur-[120px] transition-all duration-1000 -z-10 ${
+            className={`absolute pointer-events-none rounded-full bg-lime-500/25 blur-[120px] transition-all duration-[1400ms] ease-[cubic-bezier(0.16,1,0.3,1)] -z-10 ${
               phase === "fullscreen-spawn"
                 ? "w-[420px] h-[420px] opacity-100 scale-150"
                 : phase === "reveal-tagline"
@@ -169,10 +169,10 @@ export const OpeningAnimation: React.FC<OpeningAnimationProps> = ({
 
         {/* Text Container: Positioned on the Right of Logo (Clean, No Highlight) */}
         <div
-          className={`flex flex-col justify-center overflow-hidden transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+          className={`flex flex-col justify-center overflow-hidden transition-all duration-[1400ms] ease-[cubic-bezier(0.16,1,0.3,1)] ${
             phase === "fullscreen-spawn" || phase === "center-minimise"
-              ? "w-0 opacity-0"
-              : "w-auto opacity-100"
+              ? "max-w-0 opacity-0 -translate-x-2"
+              : "max-w-[400px] opacity-100 translate-x-0"
           }`}
         >
           {/* Typed 'Q Group' Headline - Crisp Solid White */}
