@@ -4,13 +4,9 @@ import React, { useState, useEffect } from "react";
 
 interface OpeningAnimationProps {
   onComplete?: () => void;
-  onStartFadeOut?: () => void;
 }
 
-export const OpeningAnimation: React.FC<OpeningAnimationProps> = ({ 
-  onComplete,
-  onStartFadeOut 
-}) => {
+export const OpeningAnimation: React.FC<OpeningAnimationProps> = ({ onComplete }) => {
   // Animation phases:
   // 1: 'fullscreen-spawn' (giant logo covering the whole screen, pulsing in center)
   // 2: 'center-minimise' (smoothly shrinks down from fullscreen to normal centered size)
@@ -26,28 +22,18 @@ export const OpeningAnimation: React.FC<OpeningAnimationProps> = ({
   const [typedText, setTypedText] = useState("");
   const fullText = "Q Group";
 
-  // Lock scroll completely on body and html while opening animation is active
+  // Prevent background scroll ONLY during the active intro (cleared completely on fade-out)
   useEffect(() => {
-    if (phase !== "hidden") {
-      document.documentElement.style.overflow = "hidden";
-      document.documentElement.style.height = "100%";
+    if (phase !== "fade-out" && phase !== "hidden") {
+      const originalOverflow = document.body.style.overflow;
       document.body.style.overflow = "hidden";
-      document.body.style.height = "100%";
-      document.body.style.touchAction = "none";
+      return () => {
+        document.body.style.overflow = originalOverflow || "";
+      };
     } else {
-      document.documentElement.style.overflow = "";
-      document.documentElement.style.height = "";
       document.body.style.overflow = "";
-      document.body.style.height = "";
-      document.body.style.touchAction = "";
+      document.documentElement.style.overflow = "";
     }
-    return () => {
-      document.documentElement.style.overflow = "";
-      document.documentElement.style.height = "";
-      document.body.style.overflow = "";
-      document.body.style.height = "";
-      document.body.style.touchAction = "";
-    };
   }, [phase]);
 
   useEffect(() => {
@@ -96,11 +82,15 @@ export const OpeningAnimation: React.FC<OpeningAnimationProps> = ({
     if (phase === "reveal-tagline") {
       const timerFade = setTimeout(() => {
         setPhase("fade-out");
-        if (onStartFadeOut) onStartFadeOut();
+        // Ensure scroll is instantly restored when fade out begins
+        document.body.style.overflow = "";
+        document.documentElement.style.overflow = "";
       }, 700);
 
       const timerFinish = setTimeout(() => {
         setPhase("hidden");
+        document.body.style.overflow = "";
+        document.documentElement.style.overflow = "";
         if (onComplete) onComplete();
       }, 1500);
 
@@ -109,13 +99,13 @@ export const OpeningAnimation: React.FC<OpeningAnimationProps> = ({
         clearTimeout(timerFinish);
       };
     }
-  }, [phase, onComplete, onStartFadeOut]);
+  }, [phase, onComplete]);
 
   if (phase === "hidden") return null;
 
   return (
     <div
-      className={`fixed inset-0 w-screen h-screen z-[99999] bg-[#080d1a] flex items-center justify-center overflow-hidden touch-none select-none transition-all duration-800 ${
+      className={`fixed inset-0 w-full h-full z-[9999] bg-[#080d1a] flex items-center justify-center overflow-hidden select-none transition-all duration-700 ${
         phase === "fade-out"
           ? "opacity-0 scale-105 pointer-events-none blur-sm"
           : "opacity-100 scale-100"
