@@ -259,12 +259,17 @@ export const Footer: React.FC<FooterProps> = ({ onSelectServiceTab }) => {
                 </div>
               </div>
 
-              <div className="flex items-start gap-2.5">
-                <MapPin className="w-4 h-4 text-cyan-400 shrink-0 mt-0.5" />
-                <span className="text-slate-300">
+              <a
+                href="https://yandex.com/maps/-/CTHZrF08"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-start gap-2.5 group cursor-pointer"
+              >
+                <MapPin className="w-4 h-4 text-cyan-400 shrink-0 mt-0.5 group-hover:scale-110 transition-transform" />
+                <span className="text-slate-300 group-hover:text-cyan-400 transition-colors">
                   {t("contact.address_val")}
                 </span>
-              </div>
+              </a>
             </div>
 
             {/* Language Switcher in Footer */}
