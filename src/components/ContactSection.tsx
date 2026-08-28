@@ -103,7 +103,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
 
       // 2. If static hosting (404/null), forward directly to info@q-group.am
       if (!res || !res.ok) {
-        res = await fetch("https://formsubmit.co/ajax/info@q-group.am", {
+        res = await fetch("https://formsubmit.co/ajax/valerimirzoyan2004@gmail.com", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
