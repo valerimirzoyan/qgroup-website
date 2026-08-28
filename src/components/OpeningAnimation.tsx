@@ -10,8 +10,8 @@ export const OpeningAnimation: React.FC<OpeningAnimationProps> = ({ onComplete }
   // Animation phases:
   // 1: 'fullscreen-spawn' (giant logo covering the whole screen, pulsing in center)
   // 2: 'center-minimise' (smoothly shrinks down from fullscreen to normal centered size)
-  // 3: 'shift-left' (logo glides very smoothly to the left to open space on the right)
-  // 4: 'typing' (types 'Q Group' letter by letter on the right while logo pulses on the left)
+  // 3: 'shift-left' (logo + ambient highlight glide very smoothly to the left together)
+  // 4: 'typing' (types 'Q Group' letter by letter on the right while logo + highlight pulse on the left)
   // 5: 'reveal-tagline' (subtitle fades in, ambient flare)
   // 6: 'fade-out' (entire overlay smoothly dissolves)
   // 7: 'hidden' (unmounted)
@@ -92,25 +92,12 @@ export const OpeningAnimation: React.FC<OpeningAnimationProps> = ({ onComplete }
           : "opacity-100 scale-100"
       }`}
     >
-      {/* Dynamic Ambient Background Glow */}
-      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-        <div
-          className={`w-[600px] h-[600px] rounded-full bg-lime-500/15 blur-[140px] transition-all duration-1200 ${
-            phase === "fullscreen-spawn"
-              ? "scale-150 opacity-90"
-              : phase === "reveal-tagline"
-              ? "scale-125 opacity-100"
-              : "scale-100 opacity-60"
-          }`}
-        />
-      </div>
-
       {/* Main Lockup Stage */}
       <div className="relative flex items-center justify-center z-10 select-none px-4">
         
         {/* Logo Container with Ultra-Smooth Minimise & Left-Glide Transitions */}
         <div
-          className={`transition-all duration-1100 ease-[cubic-bezier(0.16,1,0.3,1)] flex items-center justify-center ${
+          className={`transition-all duration-1100 ease-[cubic-bezier(0.16,1,0.3,1)] flex items-center justify-center relative ${
             phase === "fullscreen-spawn"
               ? "scale-[4.2] sm:scale-[4.8] opacity-85"
               : phase === "center-minimise"
@@ -118,11 +105,22 @@ export const OpeningAnimation: React.FC<OpeningAnimationProps> = ({ onComplete }
               : "scale-100 opacity-100 mr-4 sm:mr-6"
           }`}
         >
+          {/* Dynamic Green Highlight - Anchored directly to Logo and Moves Left Together */}
+          <div
+            className={`absolute pointer-events-none rounded-full bg-lime-500/25 blur-[120px] transition-all duration-1000 -z-10 ${
+              phase === "fullscreen-spawn"
+                ? "w-[420px] h-[420px] opacity-100 scale-150"
+                : phase === "reveal-tagline"
+                ? "w-[320px] h-[320px] opacity-100 scale-125"
+                : "w-[260px] h-[260px] opacity-85 scale-100"
+            }`}
+          />
+
           {/* Pulsing Glow Ring around Logo */}
           <div className="relative flex items-center justify-center">
             {/* Ambient Radial Pulse */}
             <div
-              className={`absolute inset-0 rounded-full bg-lime-400/30 blur-xl transition-all duration-700 ${
+              className={`absolute inset-0 rounded-full bg-lime-400/35 blur-xl transition-all duration-700 ${
                 phase === "reveal-tagline"
                   ? "scale-150 opacity-100"
                   : "animate-ping opacity-60"
@@ -134,7 +132,7 @@ export const OpeningAnimation: React.FC<OpeningAnimationProps> = ({ onComplete }
               <img
                 src="/images/logos/q-logo.png"
                 alt="Q Group Logo"
-                className="w-full h-full object-contain filter drop-shadow-[0_0_24px_rgba(132,204,22,0.75)] animate-pulse"
+                className="w-full h-full object-contain filter drop-shadow-[0_0_24px_rgba(132,204,22,0.8)] animate-pulse"
               />
             </div>
           </div>
@@ -142,12 +140,15 @@ export const OpeningAnimation: React.FC<OpeningAnimationProps> = ({ onComplete }
 
         {/* Text Container: Positioned on the Right of Logo */}
         <div
-          className={`flex flex-col justify-center overflow-hidden transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] ${
+          className={`flex flex-col justify-center overflow-hidden transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] relative ${
             phase === "fullscreen-spawn" || phase === "center-minimise"
               ? "w-0 opacity-0"
               : "w-auto opacity-100"
           }`}
         >
+          {/* Subtle text ambient glow when revealed */}
+          <div className="absolute inset-0 bg-lime-500/10 blur-[80px] -z-10 pointer-events-none" />
+
           {/* Typed 'Q Group' Headline */}
           <div className="flex items-center">
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-white whitespace-nowrap">
