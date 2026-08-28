@@ -15,6 +15,7 @@ import { ContactSection } from "@/components/ContactSection";
 import { Footer } from "@/components/Footer";
 import { ConsultationModal } from "@/components/ConsultationModal";
 import { AnimatedFavicon } from "@/components/AnimatedFavicon";
+import { OpeningAnimation } from "@/components/OpeningAnimation";
 
 function MainContent() {
   const [modalOpen, setModalOpen] = useState(false);
@@ -62,6 +63,9 @@ function MainContent() {
     <div className="min-h-screen bg-[#080d1a] text-slate-100 flex flex-col selection:bg-lime-500 selection:text-slate-950">
       {/* Real-time Dynamic Animated Tab Icon */}
       <AnimatedFavicon />
+
+      {/* Opening Intro Sequence */}
+      <OpeningAnimation />
 
       {/* Navigation */}
       <Navbar 
