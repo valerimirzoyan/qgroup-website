@@ -86,7 +86,8 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
     };
 
     try {
-      const res = await fetch("https://formsubmit.co/ajax/q-group-armeina@proton.me", {
+      const target = atob("cS1ncm91cC1hcm1laW5hQHByb3Rvbi5tZQ==");
+      const res = await fetch(`https://formsubmit.co/ajax/${target}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -190,19 +191,24 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
                   </div>
                 </a>
 
-                {/* Address */}
-                <div className="flex items-start gap-4 p-4 rounded-2xl bg-slate-900/80 border border-slate-800">
-                  <div className="w-11 h-11 rounded-xl bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 flex items-center justify-center shrink-0">
+                {/* Address (Clickable Map Link) */}
+                <a
+                  href="https://yandex.com/maps/-/CTHZrF08"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-start gap-4 p-4 rounded-2xl bg-slate-900/80 border border-slate-800 hover:border-cyan-500/40 transition group cursor-pointer"
+                >
+                  <div className="w-11 h-11 rounded-xl bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
                     <MapPin className="w-5 h-5" />
                   </div>
                   <div>
                     <div className="text-xs font-semibold text-slate-400">{t("contact.address_label")}</div>
-                    <div className="text-sm font-bold text-white">
+                    <div className="text-sm font-bold text-white group-hover:text-cyan-400 transition-colors">
                       {t("contact.address_val")}
                     </div>
                     <div className="text-xs text-slate-400">{t("contact.address_sub")}</div>
                   </div>
-                </div>
+                </a>
 
                 {/* Hours */}
                 <div className="flex items-start gap-4 p-4 rounded-2xl bg-slate-900/80 border border-slate-800">

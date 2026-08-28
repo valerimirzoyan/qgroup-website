@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { useLanguage } from "@/data/LanguageContext";
 import confetti from "canvas-confetti";
-import { X, CheckCircle2, Send, ShieldCheck, Sparkles, AlertCircle } from "lucide-react";
+import { X, CheckCircle2, Send, ShieldCheck, Sparkles, AlertCircle, Clock } from "lucide-react";
 
 interface ConsultationModalProps {
   isOpen: boolean;
@@ -31,15 +31,82 @@ export const ConsultationModal: React.FC<ConsultationModalProps> = ({
   const [company, setCompany] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
-  const [service, setService] = useState(defaultService || "IT Outsourcing");
+  const [service, setService] = useState(defaultService || "IT Outsourcing & Helpdesk");
   const [notes, setNotes] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [countdown, setCountdown] = useState(5);
 
   useEffect(() => {
     if (defaultService) setService(defaultService);
   }, [defaultService]);
+
+  useEffect(() => {
+    if (planDetails) {
+      setService(`Custom Plan (${planDetails.workstations} PCs, ${planDetails.servers} Servers)`);
+    }
+  }, [planDetails]);
+
+  const handleModalClose = () => {
+    onClose();
+    setTimeout(() => {
+      setSubmitted(false);
+      setName("");
+      setCompany("");
+      setEmail("");
+      setPhone("");
+      setNotes("");
+      setErrorMessage(null);
+      setCountdown(5);
+    }, 300);
+  };
+
+  // Close on Escape key press
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && isOpen) {
+        handleModalClose();
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isOpen]);
+
+  // Lock body scroll when modal is open
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [isOpen]);
+
+  // 5-second automatic close and form reset after successful submission
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+    let interval: NodeJS.Timeout;
+
+    if (submitted) {
+      setCountdown(5);
+
+      interval = setInterval(() => {
+        setCountdown((prev) => (prev > 1 ? prev - 1 : 1));
+      }, 1000);
+
+      timer = setTimeout(() => {
+        handleModalClose();
+      }, 5000);
+    }
+
+    return () => {
+      clearTimeout(timer);
+      clearInterval(interval);
+    };
+  }, [submitted]);
 
   if (!isOpen) return null;
 
@@ -58,13 +125,14 @@ export const ConsultationModal: React.FC<ConsultationModalProps> = ({
       calculatorPlan: planDetails
         ? `${planDetails.workstations} Workstations, ${planDetails.servers} Servers, ${planDetails.locations} Site(s), ${planDetails.security} Security, ${planDetails.schedule} Hours (~${planDetails.estimatedCost.toLocaleString()} AMD/mo)`
         : "None",
-      _subject: `New Quick Consultation Lead: ${name} (${company})`,
+      _subject: `New IT Consultation Lead: ${name} (${company})`,
       _template: "table",
       _captcha: "false"
     };
 
     try {
-      const res = await fetch("https://formsubmit.co/ajax/q-group-armeina@proton.me", {
+      const target = atob("cS1ncm91cC1hcm1laW5hQHByb3Rvbi5tZQ==");
+      const res = await fetch(`https://formsubmit.co/ajax/${target}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -100,7 +168,7 @@ export const ConsultationModal: React.FC<ConsultationModalProps> = ({
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto">
       {/* Backdrop */}
       <div
-        onClick={onClose}
+        onClick={handleModalClose}
         className="fixed inset-0 bg-slate-950/80 backdrop-blur-md transition-opacity"
       />
 
@@ -109,7 +177,7 @@ export const ConsultationModal: React.FC<ConsultationModalProps> = ({
         
         {/* Close Button */}
         <button
-          onClick={onClose}
+          onClick={handleModalClose}
           className="absolute top-5 right-5 p-2 rounded-xl bg-slate-800 text-slate-400 hover:text-white hover:bg-slate-700 transition cursor-pointer"
           aria-label="Close"
         >
@@ -118,7 +186,7 @@ export const ConsultationModal: React.FC<ConsultationModalProps> = ({
 
         {submitted ? (
           <div className="py-8 text-center space-y-4">
-            <div className="w-16 h-16 rounded-2xl bg-lime-500/20 border border-lime-500 text-lime-400 mx-auto flex items-center justify-center shadow-lg shadow-lime-500/20">
+            <div className="w-16 h-16 rounded-2xl bg-lime-500/20 border border-lime-500 text-lime-400 mx-auto flex items-center justify-center shadow-lg shadow-lime-500/20 animate-bounce">
               <CheckCircle2 className="w-8 h-8" />
             </div>
             <h3 className="text-2xl font-extrabold text-white">
@@ -127,9 +195,16 @@ export const ConsultationModal: React.FC<ConsultationModalProps> = ({
             <p className="text-sm text-slate-300 max-w-sm mx-auto leading-relaxed">
               {t("form.success_desc")}
             </p>
-            <div className="pt-4">
+
+            {/* 5-second auto-close countdown badge */}
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-800 border border-slate-700 text-xs font-semibold text-lime-400">
+              <Clock className="w-3.5 h-3.5" />
+              <span>Closing in {countdown}s...</span>
+            </div>
+
+            <div className="pt-3">
               <button
-                onClick={onClose}
+                onClick={handleModalClose}
                 className="px-6 py-2.5 rounded-xl bg-lime-500 text-slate-950 font-bold text-sm hover:bg-lime-400 transition cursor-pointer"
               >
                 {t("form.modal_close")}
@@ -140,15 +215,11 @@ export const ConsultationModal: React.FC<ConsultationModalProps> = ({
           <form onSubmit={handleSubmit} className="space-y-4">
             
             <div>
-              <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-lime-500/10 border border-lime-500/20 text-[11px] font-bold text-lime-400 mb-2">
-                <Sparkles className="w-3 h-3" />
-                <span>{t("contact.email_sub")}</span>
-              </div>
               <h3 className="text-xl font-bold text-white">
-                {t("form.modal_title")}
+                {t("contact.form_title")}
               </h3>
-              <p className="text-xs text-slate-400 mt-1">
-                {t("form.modal_desc")}
+              <p className="text-xs text-slate-400 mt-1 font-medium">
+                {t("contact.form_subtitle")}
               </p>
             </div>
 
@@ -159,116 +230,134 @@ export const ConsultationModal: React.FC<ConsultationModalProps> = ({
               </div>
             )}
 
-            {/* If plan details exist from calculator, show summary box */}
-            {planDetails && (
-              <div className="p-3 rounded-xl bg-slate-950 border border-slate-800 text-xs space-y-1">
-                <div className="font-bold text-lime-400 flex justify-between">
-                  <span>{t("contact.attached_plan")}:</span>
-                  <span>~{planDetails.estimatedCost.toLocaleString()} {t("calc.amd")}</span>
-                </div>
-                <div className="text-slate-400">
-                  {planDetails.workstations} {t("calc.breakdown_endpoints")} • {planDetails.servers} {t("calc.servers_unit")} • {planDetails.locations} {t("calc.breakdown_sites")} • {planDetails.security.toUpperCase()}
-                </div>
-              </div>
-            )}
-
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              <div className="space-y-1">
-                <label className="text-xs font-semibold text-slate-300">{t("form.name")} *</label>
+              <div>
+                <label className="block text-xs font-bold text-slate-300 mb-1">
+                  {t("form.name")} <span className="text-lime-400">*</span>
+                </label>
                 <input
                   type="text"
                   required
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   placeholder={t("form.name_placeholder")}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white text-sm focus:outline-none focus:border-lime-400"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-800/80 border border-slate-700 text-white placeholder-slate-500 text-xs focus:outline-none focus:border-lime-500 transition"
                 />
               </div>
 
-              <div className="space-y-1">
-                <label className="text-xs font-semibold text-slate-300">{t("form.company")} *</label>
+              <div>
+                <label className="block text-xs font-bold text-slate-300 mb-1">
+                  {t("form.company")} <span className="text-lime-400">*</span>
+                </label>
                 <input
                   type="text"
                   required
                   value={company}
                   onChange={(e) => setCompany(e.target.value)}
                   placeholder={t("form.company_placeholder")}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white text-sm focus:outline-none focus:border-lime-400"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-800/80 border border-slate-700 text-white placeholder-slate-500 text-xs focus:outline-none focus:border-lime-500 transition"
                 />
               </div>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              <div className="space-y-1">
-                <label className="text-xs font-semibold text-slate-300">{t("form.email")} *</label>
-                <input
-                  type="email"
-                  required
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder={t("form.email_placeholder")}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white text-sm focus:outline-none focus:border-lime-400"
-                />
-              </div>
-
-              <div className="space-y-1">
-                <label className="text-xs font-semibold text-slate-300">{t("form.phone")} *</label>
+              <div>
+                <label className="block text-xs font-bold text-slate-300 mb-1">
+                  {t("form.phone")} <span className="text-lime-400">*</span>
+                </label>
                 <input
                   type="tel"
                   required
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
                   placeholder={t("form.phone_placeholder")}
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white text-sm focus:outline-none focus:border-lime-400"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-800/80 border border-slate-700 text-white placeholder-slate-500 text-xs focus:outline-none focus:border-lime-500 transition"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-slate-300 mb-1">
+                  {t("form.email")} <span className="text-lime-400">*</span>
+                </label>
+                <input
+                  type="email"
+                  required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder={t("form.email_placeholder")}
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-slate-800/80 border border-slate-700 text-white placeholder-slate-500 text-xs focus:outline-none focus:border-lime-500 transition"
                 />
               </div>
             </div>
 
-            <div className="space-y-1">
-              <label className="text-xs font-semibold text-slate-300">{t("form.service")}</label>
+            <div>
+              <label className="block text-xs font-bold text-slate-300 mb-1">
+                {t("form.service")}
+              </label>
               <select
                 value={service}
                 onChange={(e) => setService(e.target.value)}
-                className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white text-sm focus:outline-none focus:border-lime-400 cursor-pointer"
+                className="w-full px-3.5 py-2.5 rounded-xl bg-slate-800/80 border border-slate-700 text-white text-xs focus:outline-none focus:border-lime-500 transition cursor-pointer"
               >
+                {planDetails && (
+                  <option value={`Custom Plan (${planDetails.workstations} PCs, ${planDetails.servers} Servers)`}>
+                    Custom Plan ({planDetails.workstations} PCs, {planDetails.servers} Servers, ~{planDetails.estimatedCost.toLocaleString()} AMD/mo)
+                  </option>
+                )}
                 <option value="IT Outsourcing & Helpdesk">{t("services.outsourcing.title")}</option>
                 <option value="IT Infrastructure & Low Current">{t("services.infra.title")}</option>
                 <option value="Cybersecurity & Defense">{t("services.cyber.title")}</option>
                 <option value="Governance, Risk & Compliance (GRC)">{t("services.grc.title")}</option>
-                <option value="Electrical & Power Systems">{t("services.electrical.title")}</option>
-                <option value="Free Full Infrastructure Audit">{t("hero.cta_quote")}</option>
+                <option value="Electrical & Backup Power Systems">{t("services.electrical.title")}</option>
+                <option value="Comprehensive IT Audit">{t("hero.cta_quote")}</option>
               </select>
             </div>
 
-            <div className="space-y-1">
-              <label className="text-xs font-semibold text-slate-300">{t("form.modal_notes")}</label>
+            <div>
+              <label className="block text-xs font-bold text-slate-300 mb-1">
+                {t("form.message")}
+              </label>
               <textarea
-                rows={2}
+                rows={3}
                 value={notes}
                 onChange={(e) => setNotes(e.target.value)}
-                placeholder={t("form.modal_notes_placeholder")}
-                className="w-full px-3.5 py-2.5 rounded-xl bg-slate-950 border border-slate-800 text-white text-sm focus:outline-none focus:border-lime-400 resize-none"
+                placeholder={t("form.message_placeholder")}
+                className="w-full px-3.5 py-2.5 rounded-xl bg-slate-800/80 border border-slate-700 text-white placeholder-slate-500 text-xs focus:outline-none focus:border-lime-500 transition resize-none"
               />
             </div>
 
-            <button
-              type="submit"
-              disabled={isSubmitting}
-              className="w-full gradient-border-btn py-3.5 rounded-xl text-center font-bold text-sm flex items-center justify-center gap-2 cursor-pointer shadow-lg shadow-lime-500/20 disabled:opacity-50"
-            >
-              {isSubmitting ? (
-                <span>{t("form.submitting")}</span>
-              ) : (
-                <>
-                  <span>{t("form.submit")}</span>
-                  <Send className="w-4 h-4" />
-                </>
-              )}
-            </button>
+            {planDetails && (
+              <div className="p-3 rounded-xl bg-lime-500/10 border border-lime-500/30 text-xs text-lime-300 flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <ShieldCheck className="w-4 h-4 text-lime-400" />
+                  <span>Custom Plan attached</span>
+                </div>
+                <span className="font-bold">~{planDetails.estimatedCost.toLocaleString()} AMD/mo</span>
+              </div>
+            )}
 
-            <div className="flex items-center justify-center gap-1.5 text-[11px] text-slate-400">
-              <ShieldCheck className="w-3.5 h-3.5 text-lime-400" />
-              <span>{t("contact.nda_notice")}</span>
+            <div className="pt-2">
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className="w-full py-3.5 px-4 rounded-xl bg-lime-500 hover:bg-lime-400 text-slate-950 font-extrabold text-sm transition duration-300 flex items-center justify-center gap-2 shadow-lg shadow-lime-500/20 disabled:opacity-50 cursor-pointer"
+              >
+                {isSubmitting ? (
+                  <>
+                    <div className="w-4 h-4 border-2 border-slate-950 border-t-transparent rounded-full animate-spin" />
+                    <span>{t("form.submitting")}</span>
+                  </>
+                ) : (
+                  <>
+                    <span>{t("form.submit")}</span>
+                    <Send className="w-4 h-4" />
+                  </>
+                )}
+              </button>
+            </div>
+
+            <div className="text-center text-[11px] text-slate-500">
+              {t("contact.privacy_note")}
             </div>
 
           </form>
