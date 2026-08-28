@@ -8,19 +8,32 @@ interface OpeningAnimationProps {
 
 export const OpeningAnimation: React.FC<OpeningAnimationProps> = ({ onComplete }) => {
   // Animation phases:
-  // 1: 'fullscreen-spawn' (giant logo covering the whole screen, centered)
+  // 0: 'standby' (dark ambient background pre-warms for ~250ms while image finishes loading in memory)
+  // 1: 'fullscreen-spawn' (giant logo covering the center of the screen)
   // 2: 'center-minimise' (smoothly shrinks down from fullscreen to centered normal scale)
   // 3: 'shift-left' (logo + ambient highlight glide with buttery smoothness to its left stayed position)
-  // 4: 'typing' (starts writing 'Q Group' letter by letter right after the logo settles on the left)
+  // 4: 'typing' (starts writing 'Q Group' letter by letter right as the logo reaches the left)
   // 5: 'reveal-tagline' (subtitle fades in smoothly with ambient glow)
   // 6: 'fade-out' (entire overlay smoothly dissolves into the main website)
   // 7: 'hidden' (unmounted)
   const [phase, setPhase] = useState<
-    "fullscreen-spawn" | "center-minimise" | "shift-left" | "typing" | "reveal-tagline" | "fade-out" | "hidden"
-  >("fullscreen-spawn");
+    "standby" | "fullscreen-spawn" | "center-minimise" | "shift-left" | "typing" | "reveal-tagline" | "fade-out" | "hidden"
+  >("standby");
 
+  const [imageLoaded, setImageLoaded] = useState(false);
   const [typedText, setTypedText] = useState("");
   const fullText = "Q Group";
+
+  // Preload logo image into browser memory immediately
+  useEffect(() => {
+    const img = new Image();
+    img.src = "/images/logos/q-logo.png";
+    if (img.complete) {
+      setImageLoaded(true);
+    } else {
+      img.onload = () => setImageLoaded(true);
+    }
+  }, []);
 
   // Prevent background scroll ONLY during the active intro (cleared completely on fade-out)
   useEffect(() => {
@@ -36,23 +49,30 @@ export const OpeningAnimation: React.FC<OpeningAnimationProps> = ({ onComplete }
     }
   }, [phase]);
 
+  // Main animation timeline orchestration
   useEffect(() => {
-    // Step 1: Start fullscreen centered, then smoothly minimise down to center
+    // Step 0 -> 1: Show dark background for 250ms buffer, then reveal giant logo in center
+    const timerSpawn = setTimeout(() => {
+      setPhase("fullscreen-spawn");
+    }, 250);
+
+    // Step 1 -> 2: Smoothly minimise from giant scale to center normal size
     const timerMinimise = setTimeout(() => {
       setPhase("center-minimise");
-    }, 80);
+    }, 380);
 
-    // Step 2: Settle at center, then start the smooth glide to the left
+    // Step 2 -> 3: Settle at center, then start smooth left glide
     const timerShift = setTimeout(() => {
       setPhase("shift-left");
-    }, 1300);
+    }, 1500);
 
-    // Step 3: Start typing slightly earlier as the logo smoothly settles into place (2100ms)
+    // Step 3 -> 4: Start typing right as the logo completes its leftward glide (2300ms)
     const timerTyping = setTimeout(() => {
       setPhase("typing");
-    }, 2100);
+    }, 2300);
 
     return () => {
+      clearTimeout(timerSpawn);
       clearTimeout(timerMinimise);
       clearTimeout(timerShift);
       clearTimeout(timerTyping);
@@ -120,7 +140,9 @@ export const OpeningAnimation: React.FC<OpeningAnimationProps> = ({ onComplete }
         {/* Logo Container: Smooth Minimise to Center -> Butter-Smooth Left Glide */}
         <div
           className={`transition-all duration-[1150ms] ease-[cubic-bezier(0.22,1,0.36,1)] flex items-center justify-center relative will-change-transform ${
-            phase === "fullscreen-spawn"
+            phase === "standby"
+              ? "scale-[4.2] sm:scale-[4.8] opacity-0"
+              : phase === "fullscreen-spawn"
               ? "scale-[4.2] sm:scale-[4.8] opacity-85"
               : phase === "center-minimise"
               ? "scale-100 opacity-100"
@@ -130,7 +152,9 @@ export const OpeningAnimation: React.FC<OpeningAnimationProps> = ({ onComplete }
           {/* Dynamic Green Highlight - Anchored directly to Logo and Moves Left Together */}
           <div
             className={`absolute pointer-events-none rounded-full bg-lime-500/25 blur-[120px] transition-all duration-[1150ms] ease-[cubic-bezier(0.22,1,0.36,1)] -z-10 ${
-              phase === "fullscreen-spawn"
+              phase === "standby"
+                ? "w-[420px] h-[420px] opacity-40 scale-100"
+                : phase === "fullscreen-spawn"
                 ? "w-[420px] h-[420px] opacity-100 scale-150"
                 : phase === "reveal-tagline"
                 ? "w-[320px] h-[320px] opacity-100 scale-125"
@@ -143,18 +167,25 @@ export const OpeningAnimation: React.FC<OpeningAnimationProps> = ({ onComplete }
             {/* Ambient Radial Pulse */}
             <div
               className={`absolute inset-0 rounded-full bg-lime-400/35 blur-xl transition-all duration-700 ${
-                phase === "reveal-tagline"
+                phase === "standby"
+                  ? "opacity-0"
+                  : phase === "reveal-tagline"
                   ? "scale-150 opacity-100"
                   : "animate-ping opacity-60"
               }`}
             />
 
-            {/* Logo Image with Rhythmic Breathing Pulse */}
+            {/* Logo Image (Zero Alt Text to prevent browser text flickering) */}
             <div className="relative w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 flex items-center justify-center">
               <img
                 src="/images/logos/q-logo.png"
-                alt="Q Group Logo"
-                className="w-full h-full object-contain filter drop-shadow-[0_0_24px_rgba(132,204,22,0.8)] animate-pulse"
+                alt=""
+                aria-hidden="true"
+                draggable={false}
+                onLoad={() => setImageLoaded(true)}
+                className={`w-full h-full object-contain filter drop-shadow-[0_0_24px_rgba(132,204,22,0.8)] animate-pulse transition-opacity duration-300 ${
+                  imageLoaded ? "opacity-100" : "opacity-0"
+                }`}
               />
             </div>
           </div>
@@ -163,7 +194,7 @@ export const OpeningAnimation: React.FC<OpeningAnimationProps> = ({ onComplete }
         {/* Text Container: Expands Smoothly on the Right of Logo Once Logo Arrives */}
         <div
           className={`flex flex-col justify-center overflow-hidden transition-all duration-[1150ms] ease-[cubic-bezier(0.22,1,0.36,1)] ${
-            phase === "fullscreen-spawn" || phase === "center-minimise"
+            phase === "standby" || phase === "fullscreen-spawn" || phase === "center-minimise"
               ? "max-w-0 opacity-0 -translate-x-2"
               : "max-w-[420px] opacity-100 translate-x-0"
           }`}
