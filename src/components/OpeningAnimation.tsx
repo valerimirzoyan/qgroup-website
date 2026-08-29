@@ -211,9 +211,9 @@ export const OpeningAnimation: React.FC<OpeningAnimationProps> = ({ onComplete }
             )}
           </div>
 
-          {/* Subtitle Tagline - Clean Crisp Slate */}
+          {/* Subtitle Tagline - Clean Crisp Slate with balanced spacing */}
           <div
-            className={`transition-all duration-700 ease-out pt-1.5 ${
+            className={`transition-all duration-700 ease-out pt-3 sm:pt-4 ${
               phase === "reveal-tagline" || phase === "fade-out"
                 ? "opacity-100 translate-y-0"
                 : "opacity-0 translate-y-2"
