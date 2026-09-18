@@ -1,6 +1,8 @@
 "use client";
 
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, { createContext, useContext, useState, useCallback } from "react";
+import { usePathname, useRouter } from "next/navigation";
+import { translatePath } from "@/lib/routes";
 
 export type Language = "en" | "hy" | "ru";
 
@@ -201,6 +203,11 @@ export const translations: Record<Language, Record<string, string>> = {
     "clients.subtitle": "Over 200 enterprises trust Q Group to manage their mission-critical operations daily.",
     "clients.satisfaction": "4.9 / 5.0 Average Client Satisfaction Rating",
     "clients.sectors": "Trusted by Leaders across 12+ Key Industries in Armenia",
+    "clients.view_all": "View All Customers",
+    "clients.modal_title": "Our Customers",
+    "clients.modal_subtitle": "Browse the complete portfolio of companies that trust Q Group with their mission-critical IT infrastructure and helpdesk.",
+    "clients.modal_count": "Trusted Customers",
+    "clients.modal_empty": "No customers have been added yet.",
 
     // Partners & Distributors
     "partners.badge": "Technology & Distribution Ecosystem",
@@ -470,6 +477,11 @@ export const translations: Record<Language, Record<string, string>> = {
     "clients.subtitle": "Ավելի քան 200 ընկերություն ամեն օր իրենց ՏՏ ենթակառուցվածքը վստահում է Q Group-ին:",
     "clients.satisfaction": "4.9 / 5.0 Հաճախորդների բավարարվածության միջին գնահատական",
     "clients.sectors": "Վստահելի գործընկեր Հայաստանի 12+ ոլորտներում",
+    "clients.view_all": "Դիտել բոլոր հաճախորդներին",
+    "clients.modal_title": "Մեր Հաճախորդները",
+    "clients.modal_subtitle": "Ծանոթացեք այն ընկերությունների ամբողջական ցանկին, որոնք վստահում են Q Group-ին իրենց ՏՏ ենթակառուցվածքը:",
+    "clients.modal_count": "վստահելի հաճախորդ",
+    "clients.modal_empty": "Հաճախորդներ դեռ չեն ավելացվել:",
 
     // Partners & Distributors
     "partners.badge": "Տեխնոլոգիական Էկոհամակարգ",
@@ -739,6 +751,11 @@ export const translations: Record<Language, Record<string, string>> = {
     "clients.subtitle": "Более 200 предприятий ежедневно доверяют стабильность своей IT-инфраструктуры Q Group.",
     "clients.satisfaction": "4.9 / 5.0 Средняя оценка удовлетворенности клиентов",
     "clients.sectors": "Надежный партнер в более чем 12 отраслях Армении",
+    "clients.view_all": "Показать всех клиентов",
+    "clients.modal_title": "Наши клиенты",
+    "clients.modal_subtitle": "Ознакомьтесь с полным портфелем компаний, доверяющих Q Group свою ИТ-инфраструктуру и техническую поддержку.",
+    "clients.modal_count": "доверенных клиентов",
+    "clients.modal_empty": "Клиенты пока не добавлены.",
 
     // Partners & Distributors
     "partners.badge": "Технологическая Экосистема",
@@ -825,20 +842,29 @@ const LanguageContext = createContext<LanguageContextType>({
   t: (key: string) => key,
 });
 
-export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [lang, setLangState] = useState<Language>("en");
+export const LanguageProvider: React.FC<{ children: React.ReactNode; lang?: Language }> = ({
+  children,
+  lang: initialLang = "en",
+}) => {
+  const [lang] = useState<Language>(initialLang);
+  const pathname = usePathname();
+  const router = useRouter();
 
-  useEffect(() => {
-    const saved = localStorage.getItem("qgroup_lang") as Language;
-    if (saved && (saved === "en" || saved === "hy" || saved === "ru")) {
-      setLangState(saved);
-    }
-  }, []);
-
-  const setLang = (newLang: Language) => {
-    setLangState(newLang);
-    localStorage.setItem("qgroup_lang", newLang);
-  };
+  const setLang = useCallback(
+    (target: Language) => {
+      if (target === lang) return;
+      // Map the current path to the equivalent localized route (services use
+      // native-script slugs, so a simple prefix swap is not enough).
+      const nextPath = translatePath(pathname, target);
+      // Switching language swaps root layouts, which triggers a full document
+      // reload. Flag it so the homepage intro does not play again.
+      try {
+        sessionStorage.setItem("qg_skip_intro", "1");
+      } catch {}
+      router.push(nextPath);
+    },
+    [lang, pathname, router]
+  );
 
   const t = (key: string): string => {
     return translations[lang]?.[key] || translations["en"]?.[key] || key;

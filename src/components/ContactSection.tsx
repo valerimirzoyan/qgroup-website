@@ -86,7 +86,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
     };
 
     try {
-      const target = atob("cS1ncm91cC1hcm1laW5hQHByb3Rvbi5tZQ==");
+      const target = atob("aW5mb0BxLWdyb3VwLmFt");
       const res = await fetch(`https://formsubmit.co/ajax/${target}`, {
         method: "POST",
         headers: {

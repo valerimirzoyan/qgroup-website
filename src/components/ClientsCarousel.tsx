@@ -1,114 +1,36 @@
 "use client";
 
-import React from "react";
-import Image from "next/image";
+import React, { useEffect, useState } from "react";
 import { useLanguage } from "@/data/LanguageContext";
-import { Shield, Star } from "lucide-react";
+import { Shield, Star, Users } from "lucide-react";
+import { Client, DEFAULT_CLIENTS } from "@/lib/content-types";
+import { ClientsModal } from "@/components/ClientsModal";
 
 export const ClientsCarousel: React.FC = () => {
   const { t } = useLanguage();
 
-  const clients = [
-    { 
-      name: "ECCO", 
-      category: "Global Footwear", 
-      monoSrc: "/images/clients/ecco.png",
-      colorSrc: "/images/clients/ecco-orig.png",
-      alt: "ECCO Armenia IT Partner",
-      url: "https://ecco.am/",
-    },
-    { 
-      name: "Karas", 
-      category: "Winery & Export", 
-      monoSrc: "/images/clients/karas.png",
-      colorSrc: "/images/clients/karas-orig.png",
-      alt: "Karas IT Infrastructure",
-      url: "https://karas.am/",
-    },
-    { 
-      name: "Dargett", 
-      category: "Craft Brewery & Hospitality", 
-      monoSrc: "/images/clients/dargett.png",
-      colorSrc: "/images/clients/dargett-orig.jpg",
-      alt: "Dargett Craft Brewery",
-      url: "https://dargett.com/",
-    },
-    { 
-      name: "Coffee Shop Company", 
-      category: "Café Chain", 
-      monoSrc: "/images/clients/coffee-shop.png",
-      colorSrc: "/images/clients/coffee-shop-orig.png",
-      alt: "Coffee Shop Company Armenia",
-      url: "https://coffeeshopcompany.am/",
-    },
-    { 
-      name: "Rouge", 
-      category: "Luxury Cosmetics", 
-      monoSrc: "/images/clients/rouge.png",
-      colorSrc: "/images/clients/rouge-orig.png",
-      alt: "Rouge Perfumery & Cosmetics",
-      url: "https://rouge.am/",
-    },
-    { 
-      name: "Guess", 
-      category: "Fashion Retail", 
-      monoSrc: "/images/clients/guess.png",
-      colorSrc: "/images/clients/guess-orig.jpg",
-      alt: "Guess Armenia Retail IT",
-      url: "https://www.guess.eu/",
-    },
-    { 
-      name: "Syrovarnya", 
-      category: "Restaurant Group", 
-      monoSrc: "/images/clients/sirovarnya.png",
-      colorSrc: "/images/clients/sirovarnya-orig.jpeg",
-      alt: "Syrovarnya Restaurant Yerevan",
-      url: "https://syrovarnya.com/",
-    },
-    { 
-      name: "Rare Water", 
-      category: "Beverage Production", 
-      monoSrc: "/images/clients/rare-water.png",
-      colorSrc: "/images/clients/rare-water-orig.png",
-      alt: "Rare Water Armenia",
-      url: "https://rare-water.com/",
-    },
-    { 
-      name: "Cube Invest", 
-      category: "Investment & Financial", 
-      monoSrc: "/images/clients/cub.png",
-      colorSrc: "/images/clients/cub-orig.svg",
-      alt: "Cube Invest",
-      url: "https://cubeinvest.am/",
-    },
-    { 
-      name: "Parvanyan Consulting", 
-      category: "Advisory & Audit", 
-      monoSrc: "/images/clients/parvanyan.png",
-      colorSrc: "/images/clients/parvanyan-orig.png",
-      alt: "Parvanyan Consulting",
-      url: "https://pconsult.am/",
-    },
-    { 
-      name: "Yasaman", 
-      category: "Hospitality & Cuisine", 
-      monoSrc: "/images/clients/yasaman.png",
-      colorSrc: "/images/clients/yasaman-orig.png",
-      alt: "Yasaman Restaurant Yerevan",
-      url: "https://yasaman.am/",
-    },
-    { 
-      name: "Council of Europe", 
-      category: "International Organization", 
-      monoSrc: "/images/clients/coe.png",
-      colorSrc: "/images/clients/coe-orig.svg",
-      alt: "Council of Europe (COE)",
-      url: "https://www.coe.int/",
-    },
-  ];
+  const [allClients, setAllClients] = useState<Client[]>(DEFAULT_CLIENTS);
+  const [clientsModalOpen, setClientsModalOpen] = useState(false);
+
+  useEffect(() => {
+    let mounted = true;
+    fetch("/api/content/clients")
+      .then((res) => (res.ok ? res.json() : null))
+      .then((list: Client[] | null) => {
+        if (mounted && Array.isArray(list)) setAllClients(list);
+      })
+      .catch(() => {});
+    return () => {
+      mounted = false;
+    };
+  }, []);
+
+  // Homepage carousel only shows clients that provide BOTH a monochrome and a
+  // full-color logo. Color-only clients appear solely in the "View all" popup.
+  const carouselClients = allClients.filter((c) => c.monoSrc && c.colorSrc);
 
   // Duplicate list for infinite loop
-  const marqueeList = [...clients, ...clients];
+  const marqueeList = [...carouselClients, ...carouselClients];
 
   return (
     <section id="clients" className="py-20 bg-slate-950 relative overflow-hidden border-t border-slate-800">
@@ -138,8 +60,8 @@ export const ClientsCarousel: React.FC = () => {
           {marqueeList.map((client, idx) => (
             <a
               key={idx}
-              href={client.url}
-              target="_blank"
+              href={client.url || undefined}
+              target={client.url ? "_blank" : undefined}
               rel="noopener noreferrer"
               className="flex-shrink-0 w-56 h-32 rounded-2xl bg-white/[0.03] hover:bg-white/[0.08] border border-white/10 hover:border-lime-500/40 p-4 flex flex-col justify-center items-center text-center transition-all duration-300 hover:scale-105 group backdrop-blur-sm shadow-md cursor-pointer relative"
             >
@@ -147,17 +69,23 @@ export const ClientsCarousel: React.FC = () => {
               <div className="relative w-36 h-14 flex items-center justify-center overflow-hidden">
                 {/* 1. Monochrome / B&W resting logo */}
                 <img
-                  src={client.monoSrc}
-                  alt={client.alt}
+                  src={client.monoSrc as string}
+                  alt={client.alt || client.name}
+                  loading="lazy"
+                  decoding="async"
                   className="max-h-12 max-w-full object-contain opacity-70 group-hover:opacity-0 transition-opacity duration-300 pointer-events-none filter drop-shadow-[0_0_1px_rgba(255,255,255,0.15)]"
                 />
 
                 {/* 2. Authentic Original Colored hover logo */}
-                <img
-                  src={client.colorSrc}
-                  alt={client.alt}
-                  className="absolute max-h-12 max-w-full object-contain opacity-0 group-hover:opacity-100 group-hover:scale-105 transition-all duration-300 pointer-events-none rounded-lg"
-                />
+                {client.colorSrc && (
+                  <img
+                    src={client.colorSrc}
+                    alt={client.alt || client.name}
+                    loading="lazy"
+                    decoding="async"
+                    className="absolute max-h-12 max-w-full object-contain opacity-0 group-hover:opacity-100 group-hover:scale-105 transition-all duration-300 pointer-events-none rounded-lg"
+                  />
+                )}
               </div>
 
               <span className="text-[11px] font-semibold text-slate-400 mt-2 tracking-wider group-hover:text-lime-400 transition-colors line-clamp-1">
@@ -180,6 +108,23 @@ export const ClientsCarousel: React.FC = () => {
           </div>
         </div>
       </div>
+
+      {/* View All Customers Trigger */}
+      <div className="flex justify-center mt-10 px-4">
+        <button
+          type="button"
+          onClick={() => setClientsModalOpen(true)}
+          className="inline-flex items-center gap-2 rounded-xl bg-lime-500 hover:bg-lime-400 text-slate-950 px-5 py-3 text-xs sm:text-sm font-bold shadow-lg shadow-lime-500/20 transition-all duration-300 hover:shadow-lime-500/40 cursor-pointer"
+        >
+          <Users className="w-4 h-4" />
+          {t("clients.view_all")}
+        </button>
+      </div>
+
+      {/* All Customers Popup */}
+      {clientsModalOpen && (
+        <ClientsModal isOpen onClose={() => setClientsModalOpen(false)} />
+      )}
 
     </section>
   );

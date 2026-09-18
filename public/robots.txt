@@ -1,7 +1,8 @@
-# https://www.robotstxt.org/robotstxt.html
 User-agent: *
 Allow: /
-Disallow: /api/
-Disallow: /_next/
 
-Sitemap: https://q-group-armenia.web.app/sitemap.xml
+Disallow: /admin
+Disallow: /admin/
+Disallow: /api/
+
+Sitemap: https://qgroup24.com/sitemap.xml

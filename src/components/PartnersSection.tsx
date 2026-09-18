@@ -1,84 +1,29 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useLanguage } from "@/data/LanguageContext";
 import { ShieldCheck, Cpu, CheckCircle2, Award, Zap } from "lucide-react";
+import { Partner, DEFAULT_PARTNERS } from "@/lib/content-types";
 
 export const PartnersSection: React.FC = () => {
   const { t } = useLanguage();
 
-  const partners = [
-    {
-      name: "Microsoft",
-      logo: "/images/partners/microsoft-orig.png",
-      tag: "Cloud, Azure & Microsoft 365",
-      type: "Global Vendor",
-      url: "https://www.microsoft.com/",
-    },
-    {
-      name: "Bitdefender",
-      logo: "/images/partners/bitdefender-orig.webp",
-      tag: "Endpoint & EDR Security",
-      type: "Global Vendor",
-      url: "https://www.bitdefender.com/",
-    },
-    {
-      name: "Kaspersky",
-      logo: "/images/partners/kaspersky-orig.png",
-      tag: "Cybersecurity & Antivirus",
-      type: "Global Vendor",
-      url: "https://www.kaspersky.com/",
-    },
-    {
-      name: "MUK Group",
-      logo: "/images/partners/muk-orig.png",
-      tag: "Cisco, Dell & Fortinet VAD",
-      type: "Premier Distributor",
-      url: "https://muk.group/am/country/am/",
-    },
-    {
-      name: "Mont Tech",
-      logo: "/images/partners/mont-orig.png",
-      tag: "Software & Cloud Solutions",
-      type: "VAD Distributor",
-      url: "https://monttech.am/hy-am",
-    },
-    {
-      name: "Axoft Global",
-      logo: "/images/partners/axoft-orig.png",
-      tag: "Security & Infrastructure",
-      type: "Global Distributor",
-      url: "https://axoftglobal.com/ru-am/",
-    },
-    {
-      name: "DG Comp",
-      logo: "/images/partners/dgcomp-orig.png",
-      tag: "Enterprise IT Hardware",
-      type: "Authorized Distributor",
-      url: "https://dgcomp.am/",
-    },
-    {
-      name: "X-Art",
-      logo: "/images/partners/xart-orig.png",
-      tag: "Apple & IT Hardware",
-      type: "Authorized Distributor",
-      url: "https://x-art.am/",
-    },
-    {
-      name: "Scan City",
-      logo: "/images/partners/scancity-orig.png",
-      tag: "Auto-ID & POS Systems",
-      type: "Authorized Distributor",
-      url: "https://scancity.am/",
-    },
-    {
-      name: "GSC",
-      logo: "/images/partners/gsc-orig.png",
-      tag: "Security & CCTV Systems",
-      type: "Security Partner",
-      url: "https://www.gsc.am/",
-    },
-  ];
+  const [partners, setPartners] = useState<Partner[]>(DEFAULT_PARTNERS);
+
+  useEffect(() => {
+    let mounted = true;
+    fetch("/api/content/partners")
+      .then((res) => (res.ok ? res.json() : []))
+      .then((list: Partner[]) => {
+        if (mounted && Array.isArray(list) && list.length > 0) {
+          setPartners(list);
+        }
+      })
+      .catch(() => {});
+    return () => {
+      mounted = false;
+    };
+  }, []);
 
   return (
     <section id="partners" className="py-20 bg-[#080d1a] relative overflow-hidden border-t border-slate-800/80">
@@ -108,8 +53,8 @@ export const PartnersSection: React.FC = () => {
           {partners.map((partner, idx) => (
             <a
               key={idx}
-              href={partner.url}
-              target="_blank"
+              href={partner.url || undefined}
+              target={partner.url ? "_blank" : undefined}
               rel="noopener noreferrer"
               className="group relative p-4 rounded-2xl bg-slate-900/80 border border-slate-800 hover:border-lime-500/50 hover:bg-slate-900 transition-all duration-300 flex flex-col items-center justify-between text-center shadow-lg hover:shadow-lime-500/10 hover:-translate-y-1 backdrop-blur-sm cursor-pointer"
             >
@@ -118,6 +63,8 @@ export const PartnersSection: React.FC = () => {
                 <img
                   src={partner.logo}
                   alt={partner.name}
+                  loading="lazy"
+                  decoding="async"
                   className="max-h-10 max-w-[130px] object-contain transition-transform duration-300 group-hover:scale-105"
                 />
               </div>

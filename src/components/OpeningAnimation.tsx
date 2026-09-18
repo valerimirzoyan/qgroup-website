@@ -1,6 +1,16 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useLayoutEffect } from "react";
+
+// Tracks whether the intro already played in the current document/tab.
+// A hard reload re-initialises this module (so the intro plays again), while
+// client-side navigation — changing language or returning from a service page —
+// keeps the module alive and skips the replay.
+let introPlayedGlobal = false;
+
+// Layout effect on the client (runs before paint, so no intro flash); plain
+// effect during SSR to avoid the React useLayoutEffect-on-server warning.
+const useSafeLayoutEffect = typeof window !== "undefined" ? useLayoutEffect : useEffect;
 
 interface OpeningAnimationProps {
   onComplete?: () => void;
@@ -16,13 +26,32 @@ export const OpeningAnimation: React.FC<OpeningAnimationProps> = ({ onComplete }
   // 5: 'reveal-tagline' (subtitle fades in smoothly with ambient glow)
   // 6: 'fade-out' (entire overlay smoothly dissolves into the main website)
   // 7: 'hidden' (unmounted)
+  const [shouldAnimate, setShouldAnimate] = useState(() => !introPlayedGlobal);
   const [phase, setPhase] = useState<
     "standby" | "fullscreen-spawn" | "center-minimise" | "shift-left" | "typing" | "reveal-tagline" | "fade-out" | "hidden"
-  >("standby");
+  >(shouldAnimate ? "standby" : "hidden");
 
   const [imageLoaded, setImageLoaded] = useState(false);
   const [typedText, setTypedText] = useState("");
   const fullText = "Q Group";
+
+  // Skip the intro when the visitor arrived via an in-app language switch
+  // (which reloads the document across root layouts). A genuine reload or a
+  // fresh tab has no flag and still plays the intro.
+  useSafeLayoutEffect(() => {
+    let skip = false;
+    try {
+      skip = sessionStorage.getItem("qg_skip_intro") === "1";
+      if (skip) sessionStorage.removeItem("qg_skip_intro");
+    } catch {}
+    if (skip && shouldAnimate) {
+      // Mark the document as "intro handled" so later in-app navigations back
+      // to the homepage within this same document do not play it either.
+      introPlayedGlobal = true;
+      setShouldAnimate(false);
+      setPhase("hidden");
+    }
+  }, [shouldAnimate]);
 
   // Preload logo image into browser memory immediately
   useEffect(() => {
@@ -51,8 +80,11 @@ export const OpeningAnimation: React.FC<OpeningAnimationProps> = ({ onComplete }
 
   // Main animation timeline orchestration
   useEffect(() => {
+    if (!shouldAnimate) return;
+
     // Step 0 -> 1: Show dark background for 250ms buffer, then reveal giant logo in center
     const timerSpawn = setTimeout(() => {
+      introPlayedGlobal = true;
       setPhase("fullscreen-spawn");
     }, 250);
 
@@ -77,7 +109,7 @@ export const OpeningAnimation: React.FC<OpeningAnimationProps> = ({ onComplete }
       clearTimeout(timerShift);
       clearTimeout(timerTyping);
     };
-  }, []);
+  }, [shouldAnimate]);
 
   // Handle smooth typing effect
   useEffect(() => {
@@ -100,7 +132,8 @@ export const OpeningAnimation: React.FC<OpeningAnimationProps> = ({ onComplete }
     }
   }, [phase]);
 
-  // Handle final reveal and fade out
+  // Handle final reveal and fade out. Each transition owns a single timer so
+  // advancing the phase cannot cancel the next step before it runs.
   useEffect(() => {
     if (phase === "reveal-tagline") {
       const timerFade = setTimeout(() => {
@@ -110,17 +143,18 @@ export const OpeningAnimation: React.FC<OpeningAnimationProps> = ({ onComplete }
         document.documentElement.style.overflow = "";
       }, 800);
 
+      return () => clearTimeout(timerFade);
+    }
+
+    if (phase === "fade-out") {
       const timerFinish = setTimeout(() => {
         setPhase("hidden");
         document.body.style.overflow = "";
         document.documentElement.style.overflow = "";
         if (onComplete) onComplete();
-      }, 1600);
+      }, 800);
 
-      return () => {
-        clearTimeout(timerFade);
-        clearTimeout(timerFinish);
-      };
+      return () => clearTimeout(timerFinish);
     }
   }, [phase, onComplete]);
 

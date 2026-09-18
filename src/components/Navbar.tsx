@@ -1,7 +1,9 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { useRouter, usePathname } from "next/navigation";
 import { useLanguage, Language } from "@/data/LanguageContext";
+import { servicePathById } from "@/lib/routes";
 import { 
   Phone, 
   Menu, 
@@ -26,9 +28,15 @@ export const Navbar: React.FC<NavbarProps> = ({
   onSelectServiceTab 
 }) => {
   const { lang, setLang, t } = useLanguage();
+  const router = useRouter();
+  const pathname = usePathname();
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [servicesDropdownOpen, setServicesDropdownOpen] = useState(false);
+
+  const base = lang === "en" ? "" : `/${lang}`;
+  const homeHref = base || "/";
+  const isHome = pathname === homeHref;
 
   useEffect(() => {
     const handleScroll = () => {
@@ -44,50 +52,65 @@ export const Navbar: React.FC<NavbarProps> = ({
       titleKey: "nav.it_outsourcing",
       descKey: "services.outsourcing.tagline",
       icon: Laptop,
-      href: "#services",
     },
     {
       id: "infrastructure",
       titleKey: "nav.infrastructure",
       descKey: "services.infra.tagline",
       icon: Server,
-      href: "#services",
     },
     {
       id: "cybersecurity",
       titleKey: "nav.cybersecurity",
       descKey: "services.cyber.tagline",
       icon: Shield,
-      href: "#services",
     },
     {
       id: "grc",
       titleKey: "nav.grc",
       descKey: "services.grc.tagline",
       icon: FileCheck,
-      href: "#services",
     },
     {
       id: "electrical",
       titleKey: "nav.electrical",
       descKey: "services.electrical.tagline",
       icon: Zap,
-      href: "#services",
     },
   ];
 
-  const handleServiceSelect = (serviceId: string) => {
-    if (onSelectServiceTab) {
-      onSelectServiceTab(serviceId);
-    }
+  // Navigate to a section on the main page (smooth-scroll if already there).
+  const navigateToSection = (id: string) => {
     setServicesDropdownOpen(false);
     setMobileMenuOpen(false);
-    
-    // Smooth scroll down to the services section
-    const servicesElem = document.getElementById("services");
-    if (servicesElem) {
-      servicesElem.scrollIntoView({ behavior: "smooth" });
+    if (isHome) {
+      if (id === "home") {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      } else {
+        document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+      }
+    } else {
+      router.push(id === "home" ? homeHref : `${homeHref}#${id}`);
     }
+  };
+
+  // "All Solutions" always goes to the main page's services section.
+  const goToAllSolutions = () => {
+    setServicesDropdownOpen(false);
+    setMobileMenuOpen(false);
+    if (isHome) {
+      onSelectServiceTab?.("all");
+      document.getElementById("services")?.scrollIntoView({ behavior: "smooth" });
+    } else {
+      router.push(`${homeHref}#services`);
+    }
+  };
+
+  // Individual services open their own landing page.
+  const goToService = (serviceId: string) => {
+    setServicesDropdownOpen(false);
+    setMobileMenuOpen(false);
+    router.push(servicePathById(serviceId, lang));
   };
 
   return (
@@ -100,7 +123,14 @@ export const Navbar: React.FC<NavbarProps> = ({
         <div className="flex items-center justify-between gap-2">
           
           {/* Logo */}
-          <a href="#" className="flex items-center gap-2.5 sm:gap-3 group shrink-0">
+          <a
+            href={homeHref}
+            onClick={(e) => {
+              e.preventDefault();
+              navigateToSection("home");
+            }}
+            className="flex items-center gap-2.5 sm:gap-3 group shrink-0"
+          >
             <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-2xl p-1 bg-slate-900/90 border border-lime-500/30 shadow-lg shadow-lime-500/15 flex items-center justify-center group-hover:border-lime-400 group-hover:scale-105 transition-all duration-300 shrink-0">
               <img
                 src="/images/logos/q-logo.png"
@@ -122,13 +152,14 @@ export const Navbar: React.FC<NavbarProps> = ({
           </a>
 
           {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center gap-0.5 xl:gap-1.5 shrink-0">
-            <a
-              href="#home"
-              className="px-2.5 xl:px-3 py-2 text-xs xl:text-sm font-medium text-slate-300 hover:text-white rounded-lg hover:bg-white/5 transition whitespace-nowrap"
+          <nav className="hidden xl:flex items-center gap-0.5 2xl:gap-1.5 shrink-0">
+            <button
+              type="button"
+              onClick={() => navigateToSection("home")}
+              className="px-2.5 2xl:px-3 py-2 text-xs 2xl:text-sm font-medium text-slate-300 hover:text-white rounded-lg hover:bg-white/5 transition whitespace-nowrap cursor-pointer"
             >
               {t("nav.home")}
-            </a>
+            </button>
 
             {/* Services Dropdown */}
             <div
@@ -137,8 +168,8 @@ export const Navbar: React.FC<NavbarProps> = ({
               onMouseLeave={() => setServicesDropdownOpen(false)}
             >
               <button
-                className="px-2.5 xl:px-3 py-2 text-xs xl:text-sm font-medium text-slate-300 hover:text-white rounded-lg hover:bg-white/5 transition flex items-center gap-1 cursor-pointer whitespace-nowrap"
-                onClick={() => handleServiceSelect("all")}
+                className="px-2.5 2xl:px-3 py-2 text-xs 2xl:text-sm font-medium text-slate-300 hover:text-white rounded-lg hover:bg-white/5 transition flex items-center gap-1 cursor-pointer whitespace-nowrap"
+                onClick={goToAllSolutions}
               >
                 <span>{t("nav.services")}</span>
                 <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${servicesDropdownOpen ? "rotate-180 text-lime-400" : ""}`} />
@@ -150,7 +181,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                     
                     {/* All Solutions item */}
                     <button
-                      onClick={() => handleServiceSelect("all")}
+                      onClick={goToAllSolutions}
                       className="w-full flex items-center gap-3 p-2.5 rounded-xl hover:bg-slate-800/80 transition text-left cursor-pointer group"
                     >
                       <div className="w-8 h-8 rounded-lg bg-slate-800 border border-slate-700 flex items-center justify-center text-slate-300 group-hover:bg-lime-500 group-hover:text-slate-950 transition-colors shrink-0">
@@ -173,7 +204,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                       return (
                         <button
                           key={item.id}
-                          onClick={() => handleServiceSelect(item.id)}
+                          onClick={() => goToService(item.id)}
                           className="w-full flex items-start gap-3 p-2.5 rounded-xl hover:bg-slate-800/80 transition text-left cursor-pointer group"
                         >
                           <div className="w-8 h-8 rounded-lg bg-lime-500/10 border border-lime-500/20 flex items-center justify-center text-lime-400 group-hover:bg-lime-500 group-hover:text-slate-950 transition-colors shrink-0 mt-0.5">
@@ -195,37 +226,41 @@ export const Navbar: React.FC<NavbarProps> = ({
               )}
             </div>
 
-            <a
-              href="#about"
-              className="px-2.5 xl:px-3 py-2 text-xs xl:text-sm font-medium text-slate-300 hover:text-white rounded-lg hover:bg-white/5 transition whitespace-nowrap"
+            <button
+              type="button"
+              onClick={() => navigateToSection("about")}
+              className="px-2.5 2xl:px-3 py-2 text-xs 2xl:text-sm font-medium text-slate-300 hover:text-white rounded-lg hover:bg-white/5 transition whitespace-nowrap cursor-pointer"
             >
               {t("nav.about")}
-            </a>
+            </button>
 
-            <a
-              href="#clients"
-              className="px-2.5 xl:px-3 py-2 text-xs xl:text-sm font-medium text-slate-300 hover:text-white rounded-lg hover:bg-white/5 transition whitespace-nowrap"
+            <button
+              type="button"
+              onClick={() => navigateToSection("clients")}
+              className="px-2.5 2xl:px-3 py-2 text-xs 2xl:text-sm font-medium text-slate-300 hover:text-white rounded-lg hover:bg-white/5 transition whitespace-nowrap cursor-pointer"
             >
               {t("nav.clients")}
-            </a>
+            </button>
 
-            <a
-              href="#partners"
-              className="px-2.5 xl:px-3 py-2 text-xs xl:text-sm font-medium text-slate-300 hover:text-white rounded-lg hover:bg-white/5 transition whitespace-nowrap"
+            <button
+              type="button"
+              onClick={() => navigateToSection("partners")}
+              className="px-2.5 2xl:px-3 py-2 text-xs 2xl:text-sm font-medium text-slate-300 hover:text-white rounded-lg hover:bg-white/5 transition whitespace-nowrap cursor-pointer"
             >
               {t("nav.partners")}
-            </a>
+            </button>
 
-            <a
-              href="#contact"
-              className="px-2.5 xl:px-3 py-2 text-xs xl:text-sm font-medium text-slate-300 hover:text-white rounded-lg hover:bg-white/5 transition whitespace-nowrap"
+            <button
+              type="button"
+              onClick={() => navigateToSection("contact")}
+              className="px-2.5 2xl:px-3 py-2 text-xs 2xl:text-sm font-medium text-slate-300 hover:text-white rounded-lg hover:bg-white/5 transition whitespace-nowrap cursor-pointer"
             >
               {t("nav.contact")}
-            </a>
+            </button>
           </nav>
 
           {/* Right Action Buttons */}
-          <div className="hidden lg:flex items-center gap-2 xl:gap-3 shrink-0">
+          <div className="hidden xl:flex items-center gap-2 2xl:gap-3 shrink-0">
             {/* Language Switcher */}
             <div className="flex items-center bg-slate-900 border border-slate-800 rounded-xl p-0.5 text-xs font-semibold shrink-0">
               <button
@@ -257,7 +292,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             {/* Direct Phone Call */}
             <a
               href="tel:8123"
-              className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-800 text-white text-xs xl:text-sm font-bold transition group whitespace-nowrap shrink-0"
+              className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-800 text-white text-xs 2xl:text-sm font-bold transition group whitespace-nowrap shrink-0"
             >
               <div className="w-5 h-5 rounded-full bg-lime-500/20 text-lime-400 flex items-center justify-center group-hover:scale-110 transition-transform">
                 <Phone className="w-3 h-3" />
@@ -268,7 +303,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             {/* CTA button */}
             <button
               onClick={() => onOpenConsultation()}
-              className="gradient-border-btn px-3.5 xl:px-5 py-2 rounded-xl text-xs xl:text-sm font-bold flex items-center gap-1.5 cursor-pointer shadow-lg shadow-lime-500/20 whitespace-nowrap shrink-0"
+              className="gradient-border-btn px-3.5 2xl:px-5 py-2 rounded-xl text-xs 2xl:text-sm font-bold flex items-center gap-1.5 cursor-pointer shadow-lg shadow-lime-500/20 whitespace-nowrap shrink-0"
             >
               <Headphones className="w-3.5 h-3.5" />
               <span>{t("nav.get_quote")}</span>
@@ -276,7 +311,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           </div>
 
           {/* Mobile menu trigger */}
-          <div className="flex items-center gap-2 lg:hidden">
+          <div className="flex items-center gap-2 xl:hidden">
             <a
               href="tel:8123"
               className="p-2 rounded-xl bg-slate-900 border border-slate-800 text-lime-400 flex items-center justify-center"
@@ -309,20 +344,20 @@ export const Navbar: React.FC<NavbarProps> = ({
 
       {/* Mobile Drawer */}
       {mobileMenuOpen && (
-        <div className="lg:hidden bg-slate-950/98 border-b border-slate-800 px-4 pt-4 pb-6 mt-3 space-y-3">
+        <div className="xl:hidden bg-slate-950/98 border-b border-slate-800 px-4 pt-4 pb-6 mt-3 space-y-3">
           <div className="flex flex-col space-y-2">
-            <a
-              href="#home"
-              onClick={() => setMobileMenuOpen(false)}
-              className="px-3 py-2.5 rounded-xl text-slate-200 font-medium hover:bg-slate-900"
+            <button
+              type="button"
+              onClick={() => navigateToSection("home")}
+              className="px-3 py-2.5 rounded-xl text-slate-200 font-medium hover:bg-slate-900 text-left cursor-pointer"
             >
               {t("nav.home")}
-            </a>
+            </button>
             
             <div className="px-3 py-2 text-xs font-semibold text-lime-400 uppercase tracking-wider flex justify-between items-center">
               <span>{t("nav.services")}</span>
               <button 
-                onClick={() => handleServiceSelect("all")}
+                onClick={goToAllSolutions}
                 className="text-[11px] text-slate-400 underline font-normal cursor-pointer"
               >
                 {t("services.tab_all")}
@@ -333,7 +368,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               {serviceItems.map((item) => (
                 <button
                   key={item.id}
-                  onClick={() => handleServiceSelect(item.id)}
+                  onClick={() => goToService(item.id)}
                   className="w-full text-left block px-3 py-2 text-sm text-slate-300 hover:text-white rounded-lg hover:bg-slate-900 cursor-pointer"
                 >
                   {t(item.titleKey)}
@@ -341,37 +376,37 @@ export const Navbar: React.FC<NavbarProps> = ({
               ))}
             </div>
 
-            <a
-              href="#about"
-              onClick={() => setMobileMenuOpen(false)}
-              className="px-3 py-2.5 rounded-xl text-slate-200 font-medium hover:bg-slate-900"
+            <button
+              type="button"
+              onClick={() => navigateToSection("about")}
+              className="px-3 py-2.5 rounded-xl text-slate-200 font-medium hover:bg-slate-900 text-left cursor-pointer"
             >
               {t("nav.about")}
-            </a>
+            </button>
 
-            <a
-              href="#clients"
-              onClick={() => setMobileMenuOpen(false)}
-              className="px-3 py-2.5 rounded-xl text-slate-200 font-medium hover:bg-slate-900"
+            <button
+              type="button"
+              onClick={() => navigateToSection("clients")}
+              className="px-3 py-2.5 rounded-xl text-slate-200 font-medium hover:bg-slate-900 text-left cursor-pointer"
             >
               {t("nav.clients")}
-            </a>
+            </button>
 
-            <a
-              href="#partners"
-              onClick={() => setMobileMenuOpen(false)}
-              className="px-3 py-2.5 rounded-xl text-slate-200 font-medium hover:bg-slate-900"
+            <button
+              type="button"
+              onClick={() => navigateToSection("partners")}
+              className="px-3 py-2.5 rounded-xl text-slate-200 font-medium hover:bg-slate-900 text-left cursor-pointer"
             >
               {t("nav.partners")}
-            </a>
+            </button>
 
-            <a
-              href="#contact"
-              onClick={() => setMobileMenuOpen(false)}
-              className="px-3 py-2.5 rounded-xl text-slate-200 font-medium hover:bg-slate-900"
+            <button
+              type="button"
+              onClick={() => navigateToSection("contact")}
+              className="px-3 py-2.5 rounded-xl text-slate-200 font-medium hover:bg-slate-900 text-left cursor-pointer"
             >
               {t("nav.contact")}
-            </a>
+            </button>
           </div>
 
           <div className="pt-3 border-t border-slate-800/80 flex flex-col gap-2">

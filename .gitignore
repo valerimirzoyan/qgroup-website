@@ -20,6 +20,9 @@
 *.secret*
 *.token*
 
+# Safe template (placeholders only) is intentionally committed
+!.env.example
+
 # Private Keys, Certificates, and Credentials
 *.pem
 *.key
@@ -36,9 +39,9 @@
 google-services.json
 GoogleService-Info.plist
 
-# Local Data, Customer Inquiries & Leads Storage
-data/
-data/leads.json
+# Local Data, Customer Inquiries & Leads Storage (root-level only; keep src/data/ tracked)
+/data/
+/data/leads.json
 *.leads.json
 
 # ==============================================================================

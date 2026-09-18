@@ -1,8 +1,9 @@
 "use client";
 
 import React, { useState } from "react";
+import { useRouter } from "next/navigation";
 import { useLanguage } from "@/data/LanguageContext";
-import { ServiceModal } from "./ServiceModal";
+import { servicePathById } from "@/lib/routes";
 import { 
   Laptop, 
   Server, 
@@ -27,11 +28,15 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({
   activeTab: propActiveTab,
   onTabChange
 }) => {
-  const { t } = useLanguage();
+  const { t, lang } = useLanguage();
+  const router = useRouter();
   const [internalTab, setInternalTab] = useState<string>("all");
-  const [modalServiceId, setModalServiceId] = useState<string | null>(null);
 
   const currentTab = propActiveTab !== undefined ? propActiveTab : internalTab;
+
+  const navigateToService = (serviceId: string) => {
+    router.push(servicePathById(serviceId, lang));
+  };
 
   const handleTabSelect = (tabId: string) => {
     if (onTabChange) {
@@ -209,7 +214,7 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({
             return (
               <div
                 key={service.id}
-                onClick={() => setModalServiceId(service.id)}
+                onClick={() => navigateToService(service.id)}
                 className={`glass-card rounded-3xl p-8 flex flex-col justify-between border ${
                   isSingleView 
                     ? "border-lime-500/50 shadow-2xl shadow-lime-500/10 bg-slate-900/90 ring-1 ring-lime-500/30" 
@@ -268,7 +273,7 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({
                   <button
                     onClick={(e) => {
                       e.stopPropagation();
-                      setModalServiceId(service.id);
+                      navigateToService(service.id);
                     }}
                     className="w-full py-3 px-4 rounded-xl bg-slate-800/90 hover:bg-slate-700 text-slate-200 hover:text-white font-semibold text-xs flex items-center justify-center gap-2 transition duration-200 cursor-pointer border border-slate-700/80 group/info"
                   >
@@ -307,13 +312,6 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({
 
       </div>
 
-      {/* Service Details Modal Popup */}
-      <ServiceModal
-        serviceId={modalServiceId}
-        isOpen={!!modalServiceId}
-        onClose={() => setModalServiceId(null)}
-        onRequestQuote={(serviceTitle) => onSelectService(serviceTitle)}
-      />
     </section>
   );
 };

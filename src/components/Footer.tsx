@@ -1,7 +1,9 @@
 "use client";
 
 import React from "react";
+import Link from "next/link";
 import { useLanguage } from "@/data/LanguageContext";
+import { servicePathById } from "@/lib/routes";
 import { 
   Phone, 
   Mail, 
@@ -75,6 +77,8 @@ export const Footer: React.FC<FooterProps> = ({ onSelectServiceTab }) => {
                 <img
                   src="/images/logos/q-logo.png"
                   alt="Q Group Logo"
+                  loading="lazy"
+                  decoding="async"
                   className="w-full h-full object-contain drop-shadow-[0_0_8px_rgba(163,230,53,0.3)]"
                 />
               </div>
@@ -186,51 +190,25 @@ export const Footer: React.FC<FooterProps> = ({ onSelectServiceTab }) => {
               {t("footer.services_links")}
             </h4>
             <ul className="space-y-2.5 text-xs">
-              <li>
-                <button 
-                  onClick={() => handleServiceClick("outsourcing")}
-                  className="hover:text-lime-400 transition flex items-center gap-1.5 text-left cursor-pointer"
-                >
-                  <ChevronRight className="w-3.5 h-3.5 text-slate-600" />
-                  <span>{t("nav.it_outsourcing")}</span>
-                </button>
-              </li>
-              <li>
-                <button 
-                  onClick={() => handleServiceClick("infrastructure")}
-                  className="hover:text-lime-400 transition flex items-center gap-1.5 text-left cursor-pointer"
-                >
-                  <ChevronRight className="w-3.5 h-3.5 text-slate-600" />
-                  <span>{t("nav.infrastructure")}</span>
-                </button>
-              </li>
-              <li>
-                <button 
-                  onClick={() => handleServiceClick("cybersecurity")}
-                  className="hover:text-lime-400 transition flex items-center gap-1.5 text-left cursor-pointer"
-                >
-                  <ChevronRight className="w-3.5 h-3.5 text-slate-600" />
-                  <span>{t("nav.cybersecurity")}</span>
-                </button>
-              </li>
-              <li>
-                <button 
-                  onClick={() => handleServiceClick("grc")}
-                  className="hover:text-lime-400 transition flex items-center gap-1.5 text-left cursor-pointer"
-                >
-                  <ChevronRight className="w-3.5 h-3.5 text-slate-600" />
-                  <span>{t("nav.grc")}</span>
-                </button>
-              </li>
-              <li>
-                <button 
-                  onClick={() => handleServiceClick("electrical")}
-                  className="hover:text-lime-400 transition flex items-center gap-1.5 text-left cursor-pointer"
-                >
-                  <ChevronRight className="w-3.5 h-3.5 text-slate-600" />
-                  <span>{t("nav.electrical")}</span>
-                </button>
-              </li>
+              {(
+                [
+                  ["outsourcing", "nav.it_outsourcing"],
+                  ["infrastructure", "nav.infrastructure"],
+                  ["cybersecurity", "nav.cybersecurity"],
+                  ["grc", "nav.grc"],
+                  ["electrical", "nav.electrical"],
+                ] as const
+              ).map(([serviceId, labelKey]) => (
+                <li key={serviceId}>
+                  <Link
+                    href={servicePathById(serviceId, lang)}
+                    className="hover:text-lime-400 transition flex items-center gap-1.5 text-left cursor-pointer"
+                  >
+                    <ChevronRight className="w-3.5 h-3.5 text-slate-600" />
+                    <span>{t(labelKey)}</span>
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 
