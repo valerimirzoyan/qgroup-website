@@ -1,0 +1,110 @@
+[
+  {
+    "id": "5c0b5b9ff5948223c90f690280e5f318",
+    "name": "ECCO",
+    "category": "Global Footwear",
+    "monoSrc": "/images/clients/ecco.png",
+    "colorSrc": "/images/clients/ecco-orig.png",
+    "alt": "ECCO Armenia IT Partner",
+    "url": "https://ecco.am/"
+  },
+  {
+    "id": "bd6d28037e625be3e9170beabcc911bb",
+    "name": "Karas",
+    "category": "Winery & Export",
+    "monoSrc": "/images/clients/karas.png",
+    "colorSrc": "/images/clients/karas-orig.png",
+    "alt": "Karas IT Infrastructure",
+    "url": "https://karas.am/"
+  },
+  {
+    "id": "f6452e2bf43a221693dd00c25fa89e3c",
+    "name": "Dargett",
+    "category": "Craft Brewery & Hospitality",
+    "monoSrc": "/images/clients/dargett.png",
+    "colorSrc": "/images/clients/dargett-orig.jpg",
+    "alt": "Dargett Craft Brewery",
+    "url": "https://dargett.com/"
+  },
+  {
+    "id": "f87593f0ed5c1c2405807812bca9c139",
+    "name": "Coffee Shop Company",
+    "category": "Café Chain",
+    "monoSrc": "/images/clients/coffee-shop.png",
+    "colorSrc": "/images/clients/coffee-shop-orig.png",
+    "alt": "Coffee Shop Company Armenia",
+    "url": "https://coffeeshopcompany.am/"
+  },
+  {
+    "id": "831ad7f31214252dc6c72b10a631862d",
+    "name": "Rouge",
+    "category": "Luxury Cosmetics",
+    "monoSrc": "/images/clients/rouge.png",
+    "colorSrc": "/images/clients/rouge-orig.png",
+    "alt": "Rouge Perfumery & Cosmetics",
+    "url": "https://rouge.am/"
+  },
+  {
+    "id": "532ce2b08b919d0fd832eec45a2baad1",
+    "name": "Guess",
+    "category": "Fashion Retail",
+    "monoSrc": "/images/clients/guess.png",
+    "colorSrc": "/images/clients/guess-orig.jpg",
+    "alt": "Guess Armenia Retail IT",
+    "url": "https://www.guess.eu/"
+  },
+  {
+    "id": "88ab3fcb5445689d4b04ce1233773897",
+    "name": "Syrovarnya",
+    "category": "Restaurant Group",
+    "monoSrc": "/images/clients/sirovarnya.png",
+    "colorSrc": "/images/clients/sirovarnya-orig.jpeg",
+    "alt": "Syrovarnya Restaurant Yerevan",
+    "url": "https://syrovarnya.com/"
+  },
+  {
+    "id": "93d85854a25c0cf380295a6cfc370d2e",
+    "name": "Rare Water",
+    "category": "Beverage Production",
+    "monoSrc": "/images/clients/rare-water.png",
+    "colorSrc": "/images/clients/rare-water-orig.png",
+    "alt": "Rare Water Armenia",
+    "url": "https://rare-water.com/"
+  },
+  {
+    "id": "5e6a5fe1006e373f23352fa93cbeede3",
+    "name": "Cube Invest",
+    "category": "Investment & Financial",
+    "monoSrc": "/images/clients/cub.png",
+    "colorSrc": "/images/clients/cub-orig.svg",
+    "alt": "Cube Invest",
+    "url": "https://cubeinvest.am/"
+  },
+  {
+    "id": "fcad716717caf12ca811d2077334918a",
+    "name": "Parvanyan Consulting",
+    "category": "Advisory & Audit",
+    "monoSrc": "/images/clients/parvanyan.png",
+    "colorSrc": "/images/clients/parvanyan-orig.png",
+    "alt": "Parvanyan Consulting",
+    "url": "https://pconsult.am/"
+  },
+  {
+    "id": "cf7d9511b56e325e68f8b649fa3acb8a",
+    "name": "Yasaman",
+    "category": "Hospitality & Cuisine",
+    "monoSrc": "/images/clients/yasaman.png",
+    "colorSrc": "/images/clients/yasaman-orig.png",
+    "alt": "Yasaman Restaurant Yerevan",
+    "url": "https://yasaman.am/"
+  },
+  {
+    "id": "0c4b2f1b49a7a04b91fe0775f6109857",
+    "name": "Council of Europe",
+    "category": "International Organization",
+    "monoSrc": "/images/clients/coe.png",
+    "colorSrc": "/images/clients/coe-orig.svg",
+    "alt": "Council of Europe (COE)",
+    "url": "https://www.coe.int/"
+  }
+]

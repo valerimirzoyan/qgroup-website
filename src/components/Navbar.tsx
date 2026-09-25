@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { useLanguage, Language } from "@/data/LanguageContext";
-import { servicePathById } from "@/lib/routes";
+import { homePath, normalizePath, servicePathById } from "@/lib/routes";
 import { 
   Phone, 
   Menu, 
@@ -34,9 +34,8 @@ export const Navbar: React.FC<NavbarProps> = ({
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [servicesDropdownOpen, setServicesDropdownOpen] = useState(false);
 
-  const base = lang === "en" ? "" : `/${lang}`;
-  const homeHref = base || "/";
-  const isHome = pathname === homeHref;
+  const homeHref = homePath(lang);
+  const isHome = normalizePath(pathname) === normalizePath(homeHref);
 
   useEffect(() => {
     const handleScroll = () => {

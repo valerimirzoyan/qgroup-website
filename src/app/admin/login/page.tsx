@@ -13,7 +13,7 @@ const cardClass = "rounded-2xl bg-slate-900/60 border border-slate-800 p-5 space
 function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const next = searchParams.get("next") || "/admin";
+  const next = searchParams.get("next") || "/admin/";
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");

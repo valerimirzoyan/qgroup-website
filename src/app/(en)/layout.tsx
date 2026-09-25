@@ -57,7 +57,7 @@ export const metadata: Metadata = {
     locale: "en_US",
     alternateLocale: ["hy_AM", "ru_RU"],
     type: "website",
-    images: ogImage("en"),
+    images: ogImage(),
   },
 };
 

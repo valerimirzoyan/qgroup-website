@@ -1,0 +1,13 @@
+<IfModule mod_authz_core.c>
+  <FilesMatch "^(config\.php|\.qgroup-config\.php)$">
+    Require all denied
+  </FilesMatch>
+  <FilesMatch "\.(json|md)$">
+    Require all denied
+  </FilesMatch>
+</IfModule>
+<IfModule !mod_authz_core.c>
+  <FilesMatch "^(config\.php|\.qgroup-config\.php|\.(json|md))$">
+    Deny from all
+  </FilesMatch>
+</IfModule>

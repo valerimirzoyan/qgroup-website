@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     siteName: "Q Group",
     locale: "en_US",
     type: "website",
-    images: ogImage("en"),
+    images: ogImage(),
   },
   alternates: {
     canonical: "https://qgroup24.com/services/cybersecurity",

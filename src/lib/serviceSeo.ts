@@ -153,12 +153,12 @@ export function servicePath(seoSlug: string, lang: SeoLang): string {
   return routeServicePath(seoSlug, lang);
 }
 
-export function ogImage(lang: SeoLang): NonNullable<Metadata["openGraph"]>["images"] {
+export function ogImage(): NonNullable<Metadata["openGraph"]>["images"] {
   return [
     {
-      url: `${BASE_URL}/og?lang=${lang}`,
-      width: 1200,
-      height: 630,
+      url: `${BASE_URL}/images/logos/q-logo-original.png`,
+      width: 500,
+      height: 500,
       alt: "Q Group — IT Support & Managed IT Services in Armenia",
     },
   ];
@@ -192,7 +192,7 @@ export function localizedServiceMetadata(seoSlug: string, lang: SeoLang): Metada
       siteName: "Q Group",
       locale: OG_LOCALE[lang],
       type: "website",
-      images: ogImage(lang),
+      images: ogImage(),
     },
   };
 }
@@ -235,7 +235,7 @@ export function localizedHubMetadata(lang: SeoLang): Metadata {
       siteName: "Q Group",
       locale: OG_LOCALE[lang],
       type: "website",
-      images: ogImage(lang),
+      images: ogImage(),
     },
   };
 }

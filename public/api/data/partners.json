@@ -1,0 +1,82 @@
+[
+  {
+    "id": "ea98ddaa3018967a54d691767962ee7a",
+    "name": "Microsoft",
+    "logo": "/images/partners/microsoft-orig.png",
+    "tag": "Cloud, Azure & Microsoft 365",
+    "type": "Global Vendor",
+    "url": "https://www.microsoft.com/"
+  },
+  {
+    "id": "6a3576a7d68ce436d46dd3b3281b5b3b",
+    "name": "Bitdefender",
+    "logo": "/images/partners/bitdefender-orig.webp",
+    "tag": "Endpoint & EDR Security",
+    "type": "Global Vendor",
+    "url": "https://www.bitdefender.com/"
+  },
+  {
+    "id": "29dd0eae39e1f0ad712dd9d160fef4b1",
+    "name": "Kaspersky",
+    "logo": "/images/partners/kaspersky-orig.png",
+    "tag": "Cybersecurity & Antivirus",
+    "type": "Global Vendor",
+    "url": "https://www.kaspersky.com/"
+  },
+  {
+    "id": "49a9df3f1ca27f4997e96059972f69bb",
+    "name": "MUK Group",
+    "logo": "/images/partners/muk-orig.png",
+    "tag": "Cisco, Dell & Fortinet VAD",
+    "type": "Premier Distributor",
+    "url": "https://muk.group/am/country/am/"
+  },
+  {
+    "id": "dc6525b4c21795e60cbbe3fbe6c06910",
+    "name": "Mont Tech",
+    "logo": "/images/partners/mont-orig.png",
+    "tag": "Software & Cloud Solutions",
+    "type": "VAD Distributor",
+    "url": "https://monttech.am/hy-am"
+  },
+  {
+    "id": "69518247336b1b31b63428fc801b120f",
+    "name": "Axoft Global",
+    "logo": "/images/partners/axoft-orig.png",
+    "tag": "Security & Infrastructure",
+    "type": "Global Distributor",
+    "url": "https://axoftglobal.com/ru-am/"
+  },
+  {
+    "id": "6e5ce080f1d2bc3fc36dc8c93d1fb37f",
+    "name": "DG Comp",
+    "logo": "/images/partners/dgcomp-orig.png",
+    "tag": "Enterprise IT Hardware",
+    "type": "Authorized Distributor",
+    "url": "https://dgcomp.am/"
+  },
+  {
+    "id": "ba093695e178b2bfb295bcfe0e3bf0e2",
+    "name": "X-Art",
+    "logo": "/images/partners/xart-orig.png",
+    "tag": "Apple & IT Hardware",
+    "type": "Authorized Distributor",
+    "url": "https://x-art.am/"
+  },
+  {
+    "id": "fb2669d9b08c8e8780c46d0c795c86c5",
+    "name": "Scan City",
+    "logo": "/images/partners/scancity-orig.png",
+    "tag": "Auto-ID & POS Systems",
+    "type": "Authorized Distributor",
+    "url": "https://scancity.am/"
+  },
+  {
+    "id": "ec5fb89312f4ceb277cd79e8f36586fb",
+    "name": "GSC",
+    "logo": "/images/partners/gsc-orig.png",
+    "tag": "Security & CCTV Systems",
+    "type": "Security Partner",
+    "url": "https://www.gsc.am/"
+  }
+]

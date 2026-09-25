@@ -114,7 +114,7 @@ function Shell({ children }: { children: React.ReactNode }) {
     setSigningOut(true);
     try {
       await fetch("/api/admin/logout", { method: "POST" });
-      router.replace("/admin/login");
+      router.replace("/admin/login/");
     } finally {
       setSigningOut(false);
     }
@@ -511,10 +511,10 @@ function Dashboard() {
     fetch("/api/admin/me")
       .then((res) => {
         if (res.status === 401) {
-          router.replace("/admin/login");
+          router.replace("/admin/login/");
         }
       })
-      .catch(() => router.replace("/admin/login"));
+      .catch(() => router.replace("/admin/login/"));
   }, [router]);
 
   return (

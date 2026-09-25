@@ -6,8 +6,8 @@ export const LANGS: Lang[] = ["en", "hy", "ru"];
 
 export const HOME_PATH: Record<Lang, string> = {
   en: "/",
-  hy: "/hy",
-  ru: "/ru",
+  hy: "/hy/",
+  ru: "/ru/",
 };
 
 export const SERVICES_HUB_SEGMENT: Record<Lang, string> = {
@@ -84,14 +84,14 @@ export function homePath(lang: Lang): string {
 
 export function hubPath(lang: Lang): string {
   return lang === "en"
-    ? "/services"
-    : `/${lang}/${SERVICES_HUB_SEGMENT[lang]}`;
+    ? "/services/"
+    : `/${lang}/${SERVICES_HUB_SEGMENT[lang]}/`;
 }
 
 export function servicePath(internalSlug: string, lang: Lang): string {
   const localized =
     SERVICE_LOCALIZED_SLUG[internalSlug]?.[lang] ?? internalSlug;
-  return `${hubPath(lang)}/${localized}`;
+  return `${hubPath(lang)}${localized}/`;
 }
 
 export function servicePathById(serviceId: string, lang: Lang): string {
@@ -135,7 +135,7 @@ export function buildLanguageAlternates(
   return languages;
 }
 
-function normalizePath(path: string): string {
+export function normalizePath(path: string): string {
   let decoded = path;
   try {
     decoded = decodeURIComponent(path);
